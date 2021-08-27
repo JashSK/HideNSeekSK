@@ -14,7 +14,7 @@
     const coverScreen = document.createElement('div');
     const styleThingy = document.createElement('style');
     const musicArray = ['https://seanysean.github.io/sk-hs-assets/Dark_80s_Horror_Music_-_Intruder_Royalty_Free_No_Copyright.mp3', 'https://seanysean.github.io/sk-hs-assets/REPULSIVE_-_Forgotten_COPYRIGHT_FREE_HORROR_MUSIC.mp3'];
-    const soundEffectsArray = ['https://seanysean.github.io/sk-hs-assets/lightning.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning2.mp3'];
+    const soundEffectsArray = ['https://seanysean.github.io/sk-hs-assets/lightning.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning2.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning3.mp3'];
     let currentSong;
     let lightningSound;
     let arrayOfTimeouts = [];
@@ -77,11 +77,11 @@ document.body.appendChild(coverScreen).appendChild(styleThingy);
     function handleFlickerTimeOut() {
         const timeoutInt = setTimeout(()=>{
             if (coverScreenOn) {
+                lightningSound = new Audio(soundEffectsArray[getRandomInt(0 , 2)]);
+                lightningSound.play();
                 setTimeout(()=>{
-                    lightningSound = new Audio(soundEffectsArray[getRandomInt(0 , 1)]);
-                    lightningSound.play();
                     coverScreen.classList.add('jashwideview');
-                }, 1500); // 1 seconds
+                }, 100); // 1 seconds
                 setTimeout(()=>{
                     coverScreen.classList.remove('jashwideview');
                 },5000); // 5 seconds

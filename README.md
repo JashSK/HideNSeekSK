@@ -6,7 +6,7 @@ Hide and seek minigame overlay for smashkarts.io
 
 ## Contributors
 
-JashSK
+JashSK\
 [SeanySean](https://github.com/seanysean)
 
 

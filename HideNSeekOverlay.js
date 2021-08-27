@@ -12,6 +12,7 @@
 (function() {
     'use strict';
     const coverScreen = document.createElement('div');
+    const weaponOverlay = document.createElement('div');
     const styleThingy = document.createElement('style');
     const musicArray = ['https://seanysean.github.io/sk-hs-assets/Dark_80s_Horror_Music_-_Intruder_Royalty_Free_No_Copyright.mp3', 'https://seanysean.github.io/sk-hs-assets/REPULSIVE_-_Forgotten_COPYRIGHT_FREE_HORROR_MUSIC.mp3'];
     const soundEffectsArray = ['https://seanysean.github.io/sk-hs-assets/lightning.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning2.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning3.mp3'];
@@ -20,6 +21,7 @@
     let arrayOfTimeouts = [];
     let coverScreenOn = false;
     coverScreen.classList.add('seansimpossibletorememberclassname', 'seanshidethething');
+    weaponOverlay.classList.add('weaponOverlay', 'seanshidethething');
     styleThingy.innerHTML = `
 .seansimpossibletorememberclassname {
         position: absolute;
@@ -43,9 +45,19 @@
     }
     .jashwideview {
         background: radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 60%);
-        background-position: 50% -10vh;
+        background-position: 50% -5vh;
         width: 100%;
+        height: 80vh;
         border: none;
+        border-bottom-right-radius: 50%;
+    }
+    .weaponOverlay {
+        background: radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 60%);
+        background-position: 50% -5vh;
+        width: 100%;
+        height: 80vh;
+        border: none;
+        border-bottom-right-radius: 50%;
     }
     body {
         overflow: hidden;
@@ -57,6 +69,7 @@ document.body.appendChild(coverScreen).appendChild(styleThingy);
             coverScreenOn = !coverScreenOn;
             if (!coverScreenOn) {
                 coverScreen.classList.add('seanshidethething');
+                weaponOverlay.classList.add('seanshidethething');
                 endAllTimeouts();
                 currentSong.pause();
                 currentSong.load();
@@ -64,6 +77,7 @@ document.body.appendChild(coverScreen).appendChild(styleThingy);
                 lightningSound.pause();
             } else {
                 coverScreen.classList.remove('seanshidethething');
+                weaponOverlay.classList.remove('seanshidethething');
                 handleFlickerTimeOut();
                 if (!currentSong) {
                     currentSong = new Audio(musicArray[0]);
@@ -105,5 +119,5 @@ document.body.appendChild(coverScreen).appendChild(styleThingy);
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
-    addBorders();
+    //addBorders();
 })();

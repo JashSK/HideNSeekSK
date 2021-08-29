@@ -23,6 +23,7 @@
     const styleThingy = document.createElement('style');
     const flashLight = document.createElement('div');
     const itemLight = document.createElement('div');
+    const timerLight = document.createElement('div');
     const musicArray = ['https://seanysean.github.io/sk-hs-assets/Dark_80s_Horror_Music_-_Intruder_Royalty_Free_No_Copyright.mp3', 'https://seanysean.github.io/sk-hs-assets/REPULSIVE_-_Forgotten_COPYRIGHT_FREE_HORROR_MUSIC.mp3'];
     const soundEffectsArray = ['https://seanysean.github.io/sk-hs-assets/lightning.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning2.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning3.mp3'];
     let currentSong;
@@ -32,7 +33,7 @@
     coverScreen.classList.add('seansimpossibletorememberclassname', 'seanshidethething');
     flashLight.classList.add('seansflashlightmain', 'seanflashlight');
     itemLight.classList.add('seanflashlight', 'seanitemlight');
-    weaponOverlay.classList.add('weaponOverlay', 'seanshidethething');
+    timerLight.classList.add('seanflashlight', 'timerlight');
     styleThingy.innerHTML = `
     .seansimpossibletorememberclassname {
         pointer-events: none;
@@ -54,6 +55,10 @@
         top: 50%;
         transform: translate(-50%,-50%);
     }
+    .seansflashlightmain::after {
+        background: radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 35%);
+        background-position: 50% -10vh;
+    }
     .seanitemlight {
         width: 31vh;
         height: 31vh;
@@ -61,43 +66,43 @@
         right: 0;
     }
     .seanitemlight::after {
-
+        background: radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 60%);
     }
     .seanflashlight::after {
         content: "";
         display: block;
-        background: radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 40%);
         width: 100%;
         height: 100%;
+    }
+    .timerlight{
+        left: 50%;
+        top: 3vh;
+        width: 12vh;
+        height: 7vh;
+        transform: translate(-50%);
+        margin-left: 16vh;
+    }
+    .timerlight::after{
+       background: radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 71%)
     }
     .seanshidethething {
         opacity: 0;
     }
     .jashwideview {
-        background: radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 ${config.wideViewSize}%);
-        background-position: 50% -5vh;
         width: 100%;
-        height: 80vh;
+        height: 100%;
         border: none;
-        border-bottom-right-radius: 50%;
     }
-    .weaponOverlay {
-        pointer-events: none;
-        position: absolute;
-        background: radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 60%);
-        background-position: 50% -5vh;
-        width: 100%;
-        height: 80vh;
-        border: none;
-        border-bottom-right-radius: 50%;
-        bottom: 0;
-        top: 0;
+    .jashwideview::after{
+        background: radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 ${config.wideViewSize}%);
+        background-position: 50% -10vh;
     }
     body {
         overflow: hidden;
     }`;
     coverScreen.appendChild(flashLight);
     coverScreen.appendChild(itemLight);
+    coverScreen.appendChild(timerLight);
     document.body.appendChild(coverScreen);
     document.body.appendChild(styleThingy);
     document.body.addEventListener('keyup', e=> {
@@ -105,7 +110,6 @@
             coverScreenOn = !coverScreenOn;
             if (!coverScreenOn) {
                 coverScreen.classList.add('seanshidethething');
-                weaponOverlay.classList.add('seanshidethething');
                 endAllTimeouts();
                 currentSong.pause();
                 currentSong.load();
@@ -113,7 +117,6 @@
                 lightningSound.pause();
             } else {
                 coverScreen.classList.remove('seanshidethething');
-                weaponOverlay.classList.remove('seanshidethething');
                 handleFlickerTimeOut();
                 if (!currentSong) {
                     currentSong = new Audio(musicArray[0]);
@@ -130,10 +133,22 @@
                 lightningSound = new Audio(soundEffectsArray[getRandomInt(0 , 2)]);
                 lightningSound.play();
                 setTimeout(()=>{
-                    coverScreen.classList.add('jashwideview');
+                    //coverScreen.classList.add('jashwideview');
+                    //flashLight.setAttribute('background', 'radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 60%)');
+                    flashLight.classList.add('jashwideview');
+                    timerLight.classList.add('seanshidethething');
+                    //flashLight.style.background = 'radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 60%)';
+                    //flashLight.style.backgroundPosition = '50% -5vh';
+                    //flashLight.style.width = '100%';
                 }, 100); // 1 seconds
                 setTimeout(()=>{
-                    coverScreen.classList.remove('jashwideview');
+                    //coverScreen.classList.remove('jashwideview');
+                    //flashLight.setAttribute('background', 'radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 35%)');
+                    flashLight.classList.remove('jashwideview');
+                    timerLight.classList.remove('seanshidethething');;
+                    //flashLight.style.background = 'radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 35%)';
+                    //flashLight.style.backgroundPosition = '50% -10vh';
+                    //flashLight.style.width = '100vh';
                 }, config.wideViewDuration * 1000);
                 handleFlickerTimeOut();
             }

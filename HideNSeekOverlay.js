@@ -11,6 +11,13 @@
 
 (function() {
     'use strict';
+    const config = {
+        lightningFrequency: 20, // seconds
+        wideViewDuration: 5, // seconds
+        wideViewSize: 60, // %
+        mainFlashlightSize: 40, // %
+        itemLightSize: 40, // %
+    }
     const coverScreen = document.createElement('div');
     const weaponOverlay = document.createElement('div');
     const styleThingy = document.createElement('style');
@@ -87,7 +94,7 @@
         border: none;
     }
     .jashwideview::after{
-        background: radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 60%);
+        background: radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 ${config.wideViewSize}%);
         background-position: 50% -10vh;
     }
     body {
@@ -142,10 +149,10 @@
                     //flashLight.style.background = 'radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 35%)';
                     //flashLight.style.backgroundPosition = '50% -10vh';
                     //flashLight.style.width = '100vh';
-                },5000); // 5 seconds
+                }, config.wideViewDuration * 1000);
                 handleFlickerTimeOut();
             }
-        }, 1000 * 20); // 20 seconds
+        }, 1000 * config.lightningFrequency);
         arrayOfTimeouts.push(timeoutInt);
     }
     function endAllTimeouts() {

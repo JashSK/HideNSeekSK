@@ -17,7 +17,24 @@
         wideViewSize: 60, // %
         mainFlashlightSize: 40, // %
         itemLightSize: 40, // %
+        welcomeScreenTime: 5,
     }
+    const configScreenOuter = document.createElement('div');
+    configScreenOuter.classList.add('configscreenouter', 'seanshidethething');
+    configScreenOuter.innerHTML = `
+    <div class="configscreeninner">
+         <div class="centered t1" style="text-decoration: underline;">Settings</div>
+         <div class="newconfigline">
+              <label class="t2">Flashlight: </label>
+              <spacer style="width:100%"></spacer>
+              <input class="input" id="input" placeholder="0">
+              <label class="t2">secs</label>
+         </div>
+         <div class="newconfigline">
+         </div>
+    </div>`;
+
+
     const coverScreen = document.createElement('div');
     const weaponOverlay = document.createElement('div');
     const styleThingy = document.createElement('style');
@@ -34,7 +51,20 @@
     flashLight.classList.add('seansflashlightmain', 'seanflashlight');
     itemLight.classList.add('seanflashlight', 'seanitemlight');
     timerLight.classList.add('seanflashlight', 'timerlight');
+
     styleThingy.innerHTML = `
+    .input{
+        width: 7vh;
+        height: 6vh;
+        padding: 1vh 1vh;
+        margin: 1vh 1.5vh;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 4vh;
+        text-align: center;
+    }
     .seansimpossibletorememberclassname {
         pointer-events: none;
         width: 100%;
@@ -97,6 +127,53 @@
         background: radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 ${config.wideViewSize}%);
         background-position: 50% -10vh;
     }
+    .configscreenouter{
+        position: absolute;
+        background: black;
+        left: 50%;
+        top: 50%;
+        width: 60vh;
+        height: 80vh;
+        transform: translate(-50%,-50%);
+        border-radius: 5%;
+        border: RGBa(255, 255, 255, 0.3) solid 0.5vh;
+        box-shadow: 0px 0px 15px white;
+        padding: 1vh;
+    }
+    .configscreeninner{
+        width: 100%;
+        height: 100%;
+        border: 0.5vh RGBa(255, 255, 255, 0.3) solid;
+        border-radius: 5%;
+        padding: 2vh;
+    }
+    .newconfigline{
+        width: 100%;
+        margin-bottom: 3vh;
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+    }
+    .centered{
+        width: 100%;
+        margin-bottom: 3vh;
+        flex-direction: row;
+        text-align:center;
+    }
+    .t1{
+       color: white;
+       font-size: 5vh;
+       font-family:fantasy;
+       letter-spacing: 0.2vh;
+       display: inline-block;
+    }
+    .t2{
+       color: white;
+       font-size: 4vh;
+       font-family:fantasy;
+       letter-spacing: 0.1vh;
+       display: inline-block;
+    }
     body {
         overflow: hidden;
     }`;
@@ -105,25 +182,41 @@
     coverScreen.appendChild(timerLight);
     document.body.appendChild(coverScreen);
     document.body.appendChild(styleThingy);
+    document.body.appendChild(configScreenOuter);
     document.body.addEventListener('keyup', e=> {
-        if (e.key === 'q' && e.altKey) {
+        if (e.key === 'q' && e.ctrlKey) {
             coverScreenOn = !coverScreenOn;
             if (!coverScreenOn) {
                 coverScreen.classList.add('seanshidethething');
+                configScreenOuter.classList.add('seanshidethething');
                 endAllTimeouts();
                 currentSong.pause();
                 currentSong.load();
                 lightningSound.load();
                 lightningSound.pause();
             } else {
+                configScreenOuter.classList.remove('seanshidethething');
+                setTimeout(()=>{
+                    configScreenOuter.classList.add('seanshidethething');
+                }, 1000 * config.welcomeScreenTime);
                 coverScreen.classList.remove('seanshidethething');
-                handleFlickerTimeOut();
-                if (!currentSong) {
+                if(!currentSong){
+                    currentSong = new Audio(musicArray[1]);
+                }
+                currentSong.load();
+                currentSong.play();
+                currentSong.currentTime = 5;
+
+                setTimeout(handleFlickerTimeOut,1000 * config.welcomeScreenTime);
+                
+                const gameMusic = setTimeout(()=>{
+                    currentSong.pause();
                     currentSong = new Audio(musicArray[0]);
                     lightningSound = new Audio(soundEffectsArray[0]);
                     currentSong.loop = true;
-                }
-                currentSong.play();
+                    currentSong.play();
+                }, 1000 * config.welcomeScreenTime);
+                arrayOfTimeouts.push(gameMusic);
             }
         }
     });
@@ -133,22 +226,12 @@
                 lightningSound = new Audio(soundEffectsArray[getRandomInt(0 , 2)]);
                 lightningSound.play();
                 setTimeout(()=>{
-                    //coverScreen.classList.add('jashwideview');
-                    //flashLight.setAttribute('background', 'radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 60%)');
                     flashLight.classList.add('jashwideview');
                     timerLight.classList.add('seanshidethething');
-                    //flashLight.style.background = 'radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 60%)';
-                    //flashLight.style.backgroundPosition = '50% -5vh';
-                    //flashLight.style.width = '100%';
-                }, 100); // 1 seconds
+                }, 100); // .1 seconds
                 setTimeout(()=>{
-                    //coverScreen.classList.remove('jashwideview');
-                    //flashLight.setAttribute('background', 'radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 35%)');
                     flashLight.classList.remove('jashwideview');
                     timerLight.classList.remove('seanshidethething');;
-                    //flashLight.style.background = 'radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 35%)';
-                    //flashLight.style.backgroundPosition = '50% -10vh';
-                    //flashLight.style.width = '100vh';
                 }, config.wideViewDuration * 1000);
                 handleFlickerTimeOut();
             }
@@ -159,6 +242,7 @@
         arrayOfTimeouts.forEach(t=>{
             clearTimeout(t);
         });
+        clearTimeout(gameMusic);
         arrayOfTimeouts = [];
     }
     function addBorders() {

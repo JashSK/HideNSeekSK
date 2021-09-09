@@ -50,10 +50,10 @@
     const optionsScreen = document.createElement('div');
     optionsScreen.classList.add('menu-screen', 'hide-item');
     optionsScreen.innerHTML = `
-    <div class="menu-inner-border">
-        <div class="new-menu-line t2">Volume</div>
+    <div class="menu-inner-border" style="text-align:center;">
+        <div class="new-menu-line t2" style="margin-bottom: 3vh;">Volume</div>
         <div class="new-menu-line" style="justify-content:center;">
-            <input type="range" min="0" max="1" step="0.01" id="changeVolumeSlider">
+            <input type="range" min="0" max="1" step="0.01" id="changeVolumeSlider" style="width: 26vh;">
         </div>
         <div class="new-menu-line">
             <div id="exitBtn2" class="exit-btn">
@@ -126,7 +126,7 @@
     .flashlight {
         background: gray;
         position: absolute;
-    }  
+    }
     .flashlight::after {
         content: "";
         display: block;
@@ -246,7 +246,7 @@
     }
     .t2{
         color: white;
-        font-size: 4vh;
+        font-size: 5.5vh;
         font-family:fantasy;
         letter-spacing: 0.1vh;
         display: inline-block;

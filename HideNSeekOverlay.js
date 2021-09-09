@@ -24,7 +24,7 @@
         mainFlashlightSize: 40, // %
         itemLightSize: 40, // %
         welcomeSplashTime: 10,
-        audioVolume: (Number(localStorage.getItem('HNS-volume')) ? Number(localStorage.getItem('HNS-volume')) : 0.5)
+        audioVolume: (Number(localStorage.getItem('HNS-volume') !== undefined) ? Number(localStorage.getItem('HNS-volume')) : 0.5)
     }
     const homeScreen = document.createElement('div');
     const menuScreen = document.createElement('div');
@@ -383,7 +383,12 @@
     document.body.appendChild(optionsScreen);
     document.body.appendChild(exitBtn);
     document.getElementById('changeVolumeSlider').value = config.audioVolume;
-
+    document.getElementById("changeVolumeSlider").addEventListener("change", (e) => {
+         console.log(e.target.value);
+         config.audioVolume = Number(e.target.value);
+         localStorage.setItem('HNS-volume', e.target.value);
+         currentSong.volume = config.audioVolume;
+    });
     // Start welcome screen
     overlayBtn.addEventListener('click', event => {
         gameOverlayOn = !gameOverlayOn;
@@ -441,12 +446,6 @@
 
                     menuScreen.classList.remove('hide-item');
                     homeScreen.classList.remove('hide-item');
-                    document.getElementById("changeVolumeSlider").addEventListener("change", (e) => {
-                        console.log(e.target.value);
-                        config.volume = Number(e.target.value);
-                        localStorage.setItem('HNS-volume', e.target.value);
-                        currentSong.volume = config.volume;
-                    });
                     document.getElementById("startBtn").addEventListener('click',event =>{
                         overlayBtn.classList.add('hide-item');
                         menuScreen.classList.add('hide-item');

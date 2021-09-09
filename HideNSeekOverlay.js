@@ -9,6 +9,12 @@
 // @grant        none
 // ==/UserScript==
 
+// -------------------------------------------------
+//
+// Proceed with caution, not for the faint of heart.
+//
+// -------------------------------------------------
+
 (function() {
     'use strict';
     const config = {
@@ -18,9 +24,11 @@
         mainFlashlightSize: 40, // %
         itemLightSize: 40, // %
         welcomeSplashTime: 10,
+        audioVolume: (Number(localStorage.getItem('HNS-volume')) ? Number(localStorage.getItem('HNS-volume')) : 0.5)
     }
     const homeScreen = document.createElement('div');
     const menuScreen = document.createElement('div');
+    const audios /* lol audios */ = [];
     menuScreen.classList.add('menu-screen', 'hide-item');
     homeScreen.classList.add('home-screen', 'hide-item');
     menuScreen.innerHTML = `
@@ -39,6 +47,21 @@
             </div>
         </div>
     </div>`;
+    const optionsScreen = document.createElement('div');
+    optionsScreen.classList.add('menu-screen', 'hide-item');
+    optionsScreen.innerHTML = `
+    <div class="menu-inner-border">
+        <div class="new-menu-line t2">Volume</div>
+        <div class="new-menu-line" style="justify-content:center;">
+            <input type="range" min="0" max="1" step="0.01" id="changeVolumeSlider">
+        </div>
+        <div class="new-menu-line">
+            <div id="exitBtn2" class="exit-btn">
+                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>
+            </div>
+        </div>
+    </div>
+    `;
 
     const welcomeSplash = document.createElement('div');
     const splashTitle = document.createElement('label');
@@ -87,6 +110,9 @@
         box-sizing: border-box;
         font-size: 4vh;
         text-align: center;
+    }
+    #changeVolumeSlider {
+        pointer-events: all !important;
     }
     .game-overlay {
         pointer-events: none;
@@ -143,6 +169,7 @@
     .hide-item {
         opacity: 0;
         pointer-events: none !important;
+        display: none;
     }
     .lightning-view {
         width: 100%;
@@ -192,7 +219,7 @@
         border: RGBa(255, 255, 255, 0.3) solid 0.5vh;
         box-shadow: 0px 0px 15px white;
         padding: 1vh;
-        pointer-events: none;
+        pointer-events: all;
     }
     .menu-inner-border{
         width: 100%;
@@ -241,6 +268,7 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
+        pointer-events: all;
     }
     .exit-btn {
         width: 30%;
@@ -312,7 +340,6 @@
         0% {
            opacity: 0%;
         }
-
         100% {
            opacity: 100%;
         }
@@ -325,7 +352,6 @@
         0% {
            opacity: 100%;
         }
-
         100% {
            opacity: 0%;
         }
@@ -337,7 +363,6 @@
         0% {
            opacity: 0%;
         }
-
         100% {
            opacity: 100%;
         }
@@ -355,12 +380,15 @@
     document.body.appendChild(overlayBtn);
     document.body.appendChild(menuScreen);
     document.body.appendChild(homeScreen);
+    document.body.appendChild(optionsScreen);
     document.body.appendChild(exitBtn);
+    document.getElementById('changeVolumeSlider').value = config.audioVolume;
 
     // Start welcome screen
     overlayBtn.addEventListener('click', event => {
         gameOverlayOn = !gameOverlayOn;
         if (!gameOverlayOn) {
+            debugger;
             currentSong.pause();
             lightningSound.pause();
             gameOverlay.classList.add('hide-item');
@@ -382,10 +410,12 @@
             overlayBtn.classList.add('hide-item');
             welcomeSplash.classList.add('fade-in-splash');
             currentSong = new Audio(musicArray[1]);
+            currentSong.volume = config.audioVolume;
             currentSong.load();
             currentSong.currentTime = 5;
             currentSong.play();
             lightningSound = new Audio(soundEffectsArray[0]);
+            lightningSound.volume = config.audioVolume;
             lightningSound.load();
             lightningSound.play();
             var timeout1 = setTimeout(()=>{
@@ -411,6 +441,12 @@
 
                     menuScreen.classList.remove('hide-item');
                     homeScreen.classList.remove('hide-item');
+                    document.getElementById("changeVolumeSlider").addEventListener("change", (e) => {
+                        console.log(e.target.value);
+                        config.volume = Number(e.target.value);
+                        localStorage.setItem('HNS-volume', e.target.value);
+                        currentSong.volume = config.volume;
+                    });
                     document.getElementById("startBtn").addEventListener('click',event =>{
                         overlayBtn.classList.add('hide-item');
                         menuScreen.classList.add('hide-item');
@@ -434,11 +470,18 @@
                             welcomeSplash.removeChild(splashContinueText);
                         }
                         catch{
-                            console.log("failed to remove splash text");
                         }
                         gameOverlayOn = !gameOverlayOn;
                         endAllTimeouts();
                         console.log("exit overlay");
+                    });
+                    document.getElementById('settingsBtn').addEventListener('click',()=>{
+                        optionsScreen.classList.remove('hide-item');
+                        menuScreen.classList.add('hide-item');
+                    });
+                    document.getElementById('exitBtn2').addEventListener('click', ()=>{
+                        optionsScreen.classList.add('hide-item');
+                        menuScreen.classList.remove('hide-item');
                     });
                 } // end of if
             }); // end of welcomeSplash event listener
@@ -450,7 +493,7 @@
         exitBtn.classList.remove('hide-item');
         currentSong.pause();
         currentSong = new Audio(musicArray[0]);
-        currentSong.load();
+        currentSong.volume = config.audioVolume;
         currentSong.loop = true;
         currentSong.play();
         exitBtn.addEventListener('click', event =>{
@@ -461,6 +504,7 @@
             currentSong.pause();
             lightningSound.pause();
             currentSong = new Audio(musicArray[1]);
+            currentSong.volume = config.audioVolume;
             currentSong.load();
             currentSong.currentTime = 5;
             currentSong.play();
@@ -475,6 +519,7 @@
             if (gameOverlayOn) {
                 lightningSound = new Audio(soundEffectsArray[getRandomInt(0 , 2)]);
                 lightningSound.play();
+                lightningSound.volume = config.audioVolume;
                 setTimeout(()=>{
                     flashLight.classList.add('lightning-view');
                     timerLight.classList.add('hide-item');

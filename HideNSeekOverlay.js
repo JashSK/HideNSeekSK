@@ -286,6 +286,7 @@
         top: 3vh;
         right: 3vh;
         width: 10vh;
+        z-index: 10000000;
     }
     .splash-title {
         color: white;

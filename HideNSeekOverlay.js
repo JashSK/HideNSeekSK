@@ -26,9 +26,11 @@
         welcomeSplashTime: 10,
         audioVolume: (Number(localStorage.getItem('HNS-volume')) ? Number(localStorage.getItem('HNS-volume')) : 0.5)
     }
+    const homeScreen = document.createElement('div');
     const menuScreen = document.createElement('div');
     const audios /* lol audios */ = [];
     menuScreen.classList.add('menu-screen', 'hide-item');
+    homeScreen.classList.add('home-screen', 'hide-item');
     menuScreen.innerHTML = `
     <div class="menu-inner-border">
         <div class="new-menu-line" style="justify-content:center;">
@@ -124,7 +126,7 @@
     .flashlight {
         background: gray;
         position: absolute;
-    }
+    }  
     .flashlight::after {
         content: "";
         display: block;
@@ -196,6 +198,14 @@
     .magnifying-glass {
         width: 5vh;
         height: 5vh;
+    }
+    .home-screen {
+        background: radial-gradient(transparent 10%, #000 100%);
+        pointer-events: none;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
     }
     .menu-screen{
         position: absolute;
@@ -369,6 +379,7 @@
     document.body.appendChild(welcomeSplash);
     document.body.appendChild(overlayBtn);
     document.body.appendChild(menuScreen);
+    document.body.appendChild(homeScreen);
     document.body.appendChild(optionsScreen);
     document.body.appendChild(exitBtn);
     document.getElementById('changeVolumeSlider').value = config.audioVolume;
@@ -387,6 +398,7 @@
             splashTitle.classList.remove('fade-out-splash');
             splashContinueText.classList.remove('fade-out-splash');
             menuScreen.classList.add('hide-item');
+            homeScreen.classList.add('hide-item');
             try {
                 welcomeSplash.removeChild(splashContinueText);
             }
@@ -428,6 +440,7 @@
                     splashContinueText.classList.add('fade-out-splash');
 
                     menuScreen.classList.remove('hide-item');
+                    homeScreen.classList.remove('hide-item');
                     document.getElementById("changeVolumeSlider").addEventListener("change", (e) => {
                         console.log(e.target.value);
                         config.volume = Number(e.target.value);
@@ -437,12 +450,14 @@
                     document.getElementById("startBtn").addEventListener('click',event =>{
                         overlayBtn.classList.add('hide-item');
                         menuScreen.classList.add('hide-item');
+                        homeScreen.classList.add('hide-item');
                         console.log("start clicked");
                         startGame();
                     });
                     document.getElementById("exitBtn").addEventListener('click',event =>{
                         overlayBtn.classList.remove('hide-item');
                         menuScreen.classList.add('hide-item');
+                        homeScreen.classList.add('hide-item');
                         currentSong.pause();
                         lightningSound.pause();
                         gameOverlay.classList.add('hide-item');
@@ -483,6 +498,7 @@
         currentSong.play();
         exitBtn.addEventListener('click', event =>{
             menuScreen.classList.remove('hide-item');
+            homeScreen.classList.remove('hide-item');
             gameOverlay.classList.add('hide-item');
             exitBtn.classList.add('hide-item');
             currentSong.pause();

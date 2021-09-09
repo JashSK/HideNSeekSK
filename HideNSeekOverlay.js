@@ -33,7 +33,7 @@
                 <img src="https://seanysean.github.io/sk-hs-assets/cogwheel.png" style="width:7vh;height:7vh;"></img>
             </div>
             <div id="exitBtn" class="exit-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:6vh;height:6vh;"></img>
+                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>
             </div>
         </div>
     </div>`;
@@ -54,6 +54,7 @@
     const itemLight = document.createElement('div');
     const timerLight = document.createElement('div');
     const overlayBtn = document.createElement('div');
+    const exitBtn = document.createElement('div');
     const musicArray = ['https://seanysean.github.io/sk-hs-assets/Dark_80s_Horror_Music_-_Intruder_Royalty_Free_No_Copyright.mp3', 'https://seanysean.github.io/sk-hs-assets/REPULSIVE_-_Forgotten_COPYRIGHT_FREE_HORROR_MUSIC.mp3'];
     const soundEffectsArray = ['https://seanysean.github.io/sk-hs-assets/lightning.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning2.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning3.mp3'];
     const magnifyingGlass = new Image();
@@ -66,8 +67,10 @@
     gameOverlay.classList.add('game-overlay', 'hide-item');
     flashLight.classList.add('flashlight-main', 'flashlight');
     itemLight.classList.add('flashlight', 'item-light');
-    timerLight.classList.add('flashlight', 'timerlight');
+    timerLight.classList.add('flashlight', 'timer-light');
     overlayBtn.classList.add('overlay-btn');
+    exitBtn.classList.add('exit-btn', 'exit-btn-reposition', 'hide-item');
+    exitBtn.innerHTML = `<img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>`;
     overlayBtn.appendChild(magnifyingGlass);
 
     styleThingy.innerHTML = `
@@ -95,8 +98,8 @@
     .flashlight {
         background: gray;
         position: absolute;
-    }    .
-    flashlight::after {
+    }
+    .flashlight::after {
         content: "";
         display: block;
         width: 100%;
@@ -123,7 +126,7 @@
     .item-light::after {
         background: radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 60%);
     }
-    .timerlight{
+    .timer-light{
         left: 50%;
         top: 3.7vh;
         width: 11vh;
@@ -132,12 +135,12 @@
         margin-left: 16.5vh;
         border-radius: 100%;
     }
-    .timerlight::after{
+    .timer-light::after{
        background: radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 71%)
     }
     .hide-item {
         opacity: 0;
-        pointer-events: none;
+        pointer-events: none !important;
     }
     .lightning-view {
         width: 100%;
@@ -216,7 +219,8 @@
         height: 10vh;
         background: RGBa(253,165,15);
         border: 1vh RGBa(233,86,34) solid;
-        border-radius: 8%/32%;
+        border-radius: 8%/33%;
+        pointer-events:all;
     }
     .settings-btn {
         width: 30%;
@@ -237,6 +241,13 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
+        pointer-events:all;
+    }
+    .exit-btn-reposition {
+        position: absolute;
+        top: 3vh;
+        right: 3vh;
+        width: 10vh;
     }
     .splash-title {
         color: white;
@@ -333,6 +344,7 @@
     document.body.appendChild(welcomeSplash);
     document.body.appendChild(overlayBtn);
     document.body.appendChild(menuScreen);
+    document.body.appendChild(exitBtn);
 
     // Start welcome screen
     overlayBtn.addEventListener('click', event => {
@@ -346,9 +358,16 @@
             welcomeSplash.classList.remove('fade-out-splash');
             splashTitle.classList.remove('fade-out-splash');
             splashContinueText.classList.remove('fade-out-splash');
-            welcomeSplash.removeChild(splashContinueText);
+            menuScreen.classList.add('hide-item');
+            try {
+                welcomeSplash.removeChild(splashContinueText);
+            }
+            catch{
+                console.log("error");
+            }
             endAllTimeouts();
         } else {
+            overlayBtn.classList.add('hide-item');
             welcomeSplash.classList.add('fade-in-splash');
             currentSong = new Audio(musicArray[1]);
             currentSong.load();
@@ -357,18 +376,21 @@
             lightningSound = new Audio(soundEffectsArray[0]);
             lightningSound.load();
             lightningSound.play();
-            setTimeout(()=>{
+            var timeout1 = setTimeout(()=>{
                 if(gameOverlayOn){
                     splashTitle.classList.add('fade-in-splash-title');
                 }
             }, 1000 * 1.5);
-            setTimeout(()=>{
+            var timeout2 = setTimeout(()=>{
                 if(gameOverlayOn){
                     welcomeSplash.appendChild(splashContinueText);
+                    console.log("continue text appended");
                 }
-            }, 1000 * 9.5);
+            }, 1000 * 8.5);
             welcomeSplash.addEventListener('click', event =>{
                 if(gameOverlayOn){
+                    clearTimeout(timeout1);
+                    clearTimeout(timeout2);
                     welcomeSplash.classList.remove('fade-in-splash');
                     splashTitle.classList.remove('fade-in-splash-title');
                     welcomeSplash.classList.add('fade-out-splash');
@@ -376,22 +398,60 @@
                     splashContinueText.classList.add('fade-out-splash');
 
                     menuScreen.classList.remove('hide-item');
-
+                    document.getElementById("startBtn").addEventListener('click',event =>{
+                        overlayBtn.classList.add('hide-item');
+                        menuScreen.classList.add('hide-item');
+                        console.log("start clicked");
+                        startGame();
+                    });
+                    document.getElementById("exitBtn").addEventListener('click',event =>{
+                        overlayBtn.classList.remove('hide-item');
+                        menuScreen.classList.add('hide-item');
+                        currentSong.pause();
+                        lightningSound.pause();
+                        gameOverlay.classList.add('hide-item');
+                        welcomeSplash.classList.remove('fade-in-splash');
+                        splashTitle.classList.remove('fade-in-splash-title');
+                        welcomeSplash.classList.remove('fade-out-splash');
+                        splashTitle.classList.remove('fade-out-splash');
+                        splashContinueText.classList.remove('fade-out-splash');
+                        try {
+                            welcomeSplash.removeChild(splashContinueText);
+                        }
+                        catch{
+                            console.log("failed to remove splash text");
+                        }
+                        gameOverlayOn = !gameOverlayOn;
+                        endAllTimeouts();
+                        console.log("exit overlay");
+                    });
                 } // end of if
             }); // end of welcomeSplash event listener
         } // end of else
     }); //end of overlayBtn event listener
 
     function startGame() {
-        /*
         gameOverlay.classList.remove('hide-item');
+        exitBtn.classList.remove('hide-item');
         currentSong.pause();
         currentSong = new Audio(musicArray[0]);
         currentSong.load();
         currentSong.loop = true;
         currentSong.play();
+        exitBtn.addEventListener('click', event =>{
+            menuScreen.classList.remove('hide-item');
+            gameOverlay.classList.add('hide-item');
+            exitBtn.classList.add('hide-item');
+            currentSong.pause();
+            lightningSound.pause();
+            currentSong = new Audio(musicArray[1]);
+            currentSong.load();
+            currentSong.currentTime = 5;
+            currentSong.play();
+            endAllTimeouts();
+            console.log("exit game");
+        });
         handleFlickerTimeOut();
-        */
     }
 
     function handleFlickerTimeOut() {

@@ -27,10 +27,12 @@
         audioVolume: (Number(localStorage.getItem('HNS-volume') !== undefined) ? Number(localStorage.getItem('HNS-volume')) : 0.5)
     }
     const homeScreen = document.createElement('div');
+    homeScreen.classList.add('home-screen', 'hide-item');
     const menuScreen = document.createElement('div');
+
     const audios /* lol audios */ = [];
     menuScreen.classList.add('menu-screen', 'hide-item');
-    homeScreen.classList.add('home-screen', 'hide-item');
+    menuScreen.id = "menu";
     menuScreen.innerHTML = `
     <div class="menu-inner-border">
         <div class="new-menu-line" style="justify-content:center;">
@@ -94,6 +96,7 @@
     itemLight.classList.add('flashlight', 'item-light');
     timerLight.classList.add('flashlight', 'timer-light');
     overlayBtn.classList.add('overlay-btn');
+    overlayBtn.id = "overlayBtn";
     exitBtn.classList.add('exit-btn', 'exit-btn-reposition', 'hide-item');
     exitBtn.innerHTML = `<img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>`;
     overlayBtn.appendChild(magnifyingGlass);
@@ -198,6 +201,7 @@
     .magnifying-glass {
         width: 5vh;
         height: 5vh;
+        pointer-events: none;
     }
     .home-screen {
         background: radial-gradient(transparent 10%, #000 100%);
@@ -280,13 +284,13 @@
         justify-content: space-around;
         align-items: center;
         pointer-events:all;
+        z-index: 10000000;
     }
     .exit-btn-reposition {
         position: absolute;
         top: 3vh;
         right: 3vh;
         width: 10vh;
-        z-index: 10000000;
     }
     .splash-title {
         color: white;
@@ -533,6 +537,41 @@
         }, 1000 * config.lightningFrequency);
         arrayOfTimeouts.push(timeoutInt);
     } // end of handleFlickerTimeOut
+
+    var dragValue;
+    function move(id){
+        var element = document.getElementById(id);
+        console.log(element);
+        element.style.position = "absolute";
+        element.onmousedown = function() {
+            dragValue = element;
+        }
+
+    }
+
+    document.addEventListener("mousemove", event=>{
+        var x = event.pageX;
+        var y = event.pageY;
+        //console.log("mouse x at: " + x);
+        //console.log("mouse y at: " + y);
+
+        dragValue.style.left = x + "px";
+        dragValue.style.top = y + "px";
+    });
+
+    document.addEventListener("mouseup", event=>{
+        dragValue = null;
+    });
+
+    menuScreen.addEventListener('mousedown', event=>{
+        move('menu');
+    });
+    menuScreen.addEventListener('mousedown', event=>{
+        console.log("overlay Button mousedown");
+        move('overlayBtn');
+    });
+
+
 
     function endAllTimeouts() {
         arrayOfTimeouts.forEach(t=>{

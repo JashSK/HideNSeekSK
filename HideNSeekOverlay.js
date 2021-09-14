@@ -565,10 +565,20 @@
         var y = event.pageY;
         //console.log("mouse x at: " + x);
         //console.log("mouse y at: " + y);
-
         if(dragValue != null){
+            if (x - (dragValue.offsetWidth / 2) < 0) { // || () || (x + (dragValue.offsetWidth / 2) > window.innerWidth) || ( {
+                x = 0 + (dragValue.offsetWidth / 2);
+            } else if (x + (dragValue.offsetWidth / 2) > window.innerWidth) {
+                x = window.innerWidth - (dragValue.offsetWidth / 2);
+            }
+            if (y - (dragValue.offsetHeight / 2) < 0) {
+                y = 0 + (dragValue.offsetHeight / 2);
+            } else if (y + (dragValue.offsetHeight / 2) > window.innerHeight) {
+                y = window.innerHeight - (dragValue.offsetHeight / 2);
+            }
             dragValue.style.left = x + "px";
             dragValue.style.top = y + "px";
+            localStorage.setItem(dragValue.id + '.pos', `${x},${y}`);
         }
     });
 
@@ -598,4 +608,15 @@
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min)
     } // end of getRandomInt
+
+    if (localStorage.getItem('overlayBtn.pos')) {
+        const coords = localStorage.getItem('overlayBtn.pos').split(',');
+        overlayBtn.style.left = coords[0] + 'px';
+        overlayBtn.style.top = coords[1] + 'px';
+    }
+    if (localStorage.getItem('menu.pos')) {
+        const coords = localStorage.getItem('menu.pos').split(',');
+        menuScreen.style.left = coords[0] + 'px';
+        menuScreen.style.top = coords[1] + 'px';
+    }
 })();

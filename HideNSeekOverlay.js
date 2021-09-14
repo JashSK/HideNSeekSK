@@ -187,8 +187,8 @@
         position: absolute;
         width: 8vh;
         height: 8vh;
-        top: 22vh;
-        right: 2vh;
+        top: 26vh;
+        right: -2vh;
         background: black;
         border-radius: 30%;
         border: white solid 0.5vh;
@@ -197,11 +197,13 @@
         justify-content: center;
         align-items: center;
         z-index: 10000000;
+        transform: translate(-50%,-50%);
     }
     .magnifying-glass {
         width: 5vh;
         height: 5vh;
         pointer-events: none;
+        user-select: none;
     }
     .home-screen {
         background: radial-gradient(transparent 10%, #000 100%);
@@ -224,6 +226,7 @@
         box-shadow: 0px 0px 15px white;
         padding: 1vh;
         pointer-events: all;
+        z-index: 1000000;
     }
     .menu-inner-border{
         width: 100%;
@@ -242,6 +245,7 @@
         align-items: center;
     }
     .t1{
+        user-select: none;
         color: white;
         font-size: 6vh;
         font-family:fantasy;
@@ -249,6 +253,7 @@
         display: inline-block;
     }
     .t2{
+        user-select: none;
         color: white;
         font-size: 5.5vh;
         font-family:fantasy;
@@ -293,6 +298,7 @@
         width: 10vh;
     }
     .splash-title {
+        user-select: none;
         color: white;
         font-size: 15vh;
         font-family: fantasy;
@@ -301,6 +307,7 @@
         opacity: 0%;
     }
     .splash-text {
+        user-select: none;
         position: absolute;
         top: 60vh;
         left: 50%;
@@ -396,100 +403,102 @@
     });
     // Start welcome screen
     overlayBtn.addEventListener('click', event => {
-        gameOverlayOn = !gameOverlayOn;
-        if (!gameOverlayOn) {
-            debugger;
-            currentSong.pause();
-            lightningSound.pause();
-            gameOverlay.classList.add('hide-item');
-            welcomeSplash.classList.remove('fade-in-splash');
-            splashTitle.classList.remove('fade-in-splash-title');
-            welcomeSplash.classList.remove('fade-out-splash');
-            splashTitle.classList.remove('fade-out-splash');
-            splashContinueText.classList.remove('fade-out-splash');
-            menuScreen.classList.add('hide-item');
-            homeScreen.classList.add('hide-item');
-            try {
-                welcomeSplash.removeChild(splashContinueText);
-            }
-            catch{
-                console.log("error");
-            }
-            endAllTimeouts();
-        } else {
-            overlayBtn.classList.add('hide-item');
-            welcomeSplash.classList.add('fade-in-splash');
-            currentSong = new Audio(musicArray[1]);
-            currentSong.volume = config.audioVolume;
-            currentSong.load();
-            currentSong.currentTime = 5;
-            currentSong.play();
-            lightningSound = new Audio(soundEffectsArray[0]);
-            lightningSound.volume = config.audioVolume;
-            lightningSound.load();
-            lightningSound.play();
-            var timeout1 = setTimeout(()=>{
-                if(gameOverlayOn){
-                    splashTitle.classList.add('fade-in-splash-title');
+        if(startX == endX && startY == endY){
+            gameOverlayOn = !gameOverlayOn;
+            if (!gameOverlayOn) {
+                debugger;
+                currentSong.pause();
+                lightningSound.pause();
+                gameOverlay.classList.add('hide-item');
+                welcomeSplash.classList.remove('fade-in-splash');
+                splashTitle.classList.remove('fade-in-splash-title');
+                welcomeSplash.classList.remove('fade-out-splash');
+                splashTitle.classList.remove('fade-out-splash');
+                splashContinueText.classList.remove('fade-out-splash');
+                menuScreen.classList.add('hide-item');
+                homeScreen.classList.add('hide-item');
+                try {
+                    welcomeSplash.removeChild(splashContinueText);
                 }
-            }, 1000 * 1.5);
-            var timeout2 = setTimeout(()=>{
-                if(gameOverlayOn){
-                    welcomeSplash.appendChild(splashContinueText);
-                    console.log("continue text appended");
+                catch{
+                    console.log("error");
                 }
-            }, 1000 * 8.5);
-            welcomeSplash.addEventListener('click', event =>{
-                if(gameOverlayOn){
-                    clearTimeout(timeout1);
-                    clearTimeout(timeout2);
-                    welcomeSplash.classList.remove('fade-in-splash');
-                    splashTitle.classList.remove('fade-in-splash-title');
-                    welcomeSplash.classList.add('fade-out-splash');
-                    splashTitle.classList.add('fade-out-splash');
-                    splashContinueText.classList.add('fade-out-splash');
-
-                    menuScreen.classList.remove('hide-item');
-                    homeScreen.classList.remove('hide-item');
-                    document.getElementById("startBtn").addEventListener('click',event =>{
-                        overlayBtn.classList.add('hide-item');
-                        menuScreen.classList.add('hide-item');
-                        homeScreen.classList.add('hide-item');
-                        console.log("start clicked");
-                        startGame();
-                    });
-                    document.getElementById("exitBtn").addEventListener('click',event =>{
-                        overlayBtn.classList.remove('hide-item');
-                        menuScreen.classList.add('hide-item');
-                        homeScreen.classList.add('hide-item');
-                        currentSong.pause();
-                        lightningSound.pause();
-                        gameOverlay.classList.add('hide-item');
+                endAllTimeouts();
+            } else {
+                overlayBtn.classList.add('hide-item');
+                welcomeSplash.classList.add('fade-in-splash');
+                currentSong = new Audio(musicArray[1]);
+                currentSong.volume = config.audioVolume;
+                currentSong.load();
+                currentSong.currentTime = 5;
+                currentSong.play();
+                lightningSound = new Audio(soundEffectsArray[0]);
+                lightningSound.volume = config.audioVolume;
+                lightningSound.load();
+                lightningSound.play();
+                var timeout1 = setTimeout(()=>{
+                    if(gameOverlayOn){
+                        splashTitle.classList.add('fade-in-splash-title');
+                    }
+                }, 1000 * 1.5);
+                var timeout2 = setTimeout(()=>{
+                    if(gameOverlayOn){
+                        welcomeSplash.appendChild(splashContinueText);
+                        console.log("continue text appended");
+                    }
+                }, 1000 * 8.5);
+                welcomeSplash.addEventListener('click', event =>{
+                    if(gameOverlayOn){
+                        clearTimeout(timeout1);
+                        clearTimeout(timeout2);
                         welcomeSplash.classList.remove('fade-in-splash');
                         splashTitle.classList.remove('fade-in-splash-title');
-                        welcomeSplash.classList.remove('fade-out-splash');
-                        splashTitle.classList.remove('fade-out-splash');
-                        splashContinueText.classList.remove('fade-out-splash');
-                        try {
-                            welcomeSplash.removeChild(splashContinueText);
-                        }
-                        catch{
-                        }
-                        gameOverlayOn = !gameOverlayOn;
-                        endAllTimeouts();
-                        console.log("exit overlay");
-                    });
-                    document.getElementById('settingsBtn').addEventListener('click',()=>{
-                        optionsScreen.classList.remove('hide-item');
-                        menuScreen.classList.add('hide-item');
-                    });
-                    document.getElementById('exitBtn2').addEventListener('click', ()=>{
-                        optionsScreen.classList.add('hide-item');
+                        welcomeSplash.classList.add('fade-out-splash');
+                        splashTitle.classList.add('fade-out-splash');
+                        splashContinueText.classList.add('fade-out-splash');
+
                         menuScreen.classList.remove('hide-item');
-                    });
-                } // end of if
-            }); // end of welcomeSplash event listener
-        } // end of else
+                        homeScreen.classList.remove('hide-item');
+                        document.getElementById("startBtn").addEventListener('click',event =>{
+                            overlayBtn.classList.add('hide-item');
+                            menuScreen.classList.add('hide-item');
+                            homeScreen.classList.add('hide-item');
+                            console.log("start clicked");
+                            startGame();
+                        });
+                        document.getElementById("exitBtn").addEventListener('click',event =>{
+                            overlayBtn.classList.remove('hide-item');
+                            menuScreen.classList.add('hide-item');
+                            homeScreen.classList.add('hide-item');
+                            currentSong.pause();
+                            lightningSound.pause();
+                            gameOverlay.classList.add('hide-item');
+                            welcomeSplash.classList.remove('fade-in-splash');
+                            splashTitle.classList.remove('fade-in-splash-title');
+                            welcomeSplash.classList.remove('fade-out-splash');
+                            splashTitle.classList.remove('fade-out-splash');
+                            splashContinueText.classList.remove('fade-out-splash');
+                            try {
+                                welcomeSplash.removeChild(splashContinueText);
+                            }
+                            catch{
+                            }
+                            gameOverlayOn = !gameOverlayOn;
+                            endAllTimeouts();
+                            console.log("exit overlay");
+                        });
+                        document.getElementById('settingsBtn').addEventListener('click',()=>{
+                            optionsScreen.classList.remove('hide-item');
+                            menuScreen.classList.add('hide-item');
+                        });
+                        document.getElementById('exitBtn2').addEventListener('click', ()=>{
+                            optionsScreen.classList.add('hide-item');
+                            menuScreen.classList.remove('hide-item');
+                        });
+                    } // end of if
+                }); // end of welcomeSplash event listener
+            } // end of else
+        }// end of if
     }); //end of overlayBtn event listener
 
     function startGame() {
@@ -539,14 +548,16 @@
     } // end of handleFlickerTimeOut
 
     var dragValue;
+    var startX;
+    var startY;
+    var endX;
+    var endY;
     function move(id){
-        var element = document.getElementById(id);
-        console.log(element);
-        element.style.position = "absolute";
-        element.onmousedown = function() {
-            dragValue = element;
-        }
-
+        dragValue = document.getElementById(id);
+        console.log("Drag value: " + dragValue.id);
+        startX = dragValue.getBoundingClientRect().x;
+        startY = dragValue.getBoundingClientRect().y;
+        console.log("X: " + startX + " Y: " + startY);
     }
 
     document.addEventListener("mousemove", event=>{
@@ -555,23 +566,27 @@
         //console.log("mouse x at: " + x);
         //console.log("mouse y at: " + y);
 
-        dragValue.style.left = x + "px";
-        dragValue.style.top = y + "px";
+        if(dragValue != null){
+            dragValue.style.left = x + "px";
+            dragValue.style.top = y + "px";
+        }
     });
 
-    document.addEventListener("mouseup", event=>{
-        dragValue = null;
+    overlayBtn.addEventListener('mousedown', event=>{
+        console.log("overlay Button mousedown");
+        move('overlayBtn');
     });
 
     menuScreen.addEventListener('mousedown', event=>{
         move('menu');
     });
-    menuScreen.addEventListener('mousedown', event=>{
-        console.log("overlay Button mousedown");
-        move('overlayBtn');
+
+    document.addEventListener("mouseup", event=>{
+        endX = dragValue.getBoundingClientRect().x;
+        endY = dragValue.getBoundingClientRect().y;
+        console.log("X: " + endX + " Y: " + endY);
+        dragValue = null;
     });
-
-
 
     function endAllTimeouts() {
         arrayOfTimeouts.forEach(t=>{

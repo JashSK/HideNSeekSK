@@ -42,10 +42,10 @@
         </div>
         <div class="new-menu-line">
             <div id="settingsBtn" class="settings-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/cogwheel.png" style="width:7vh;height:7vh;"></img>
+                <img src="https://seanysean.github.io/sk-hs-assets/cogwheel.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
             <div id="exitBtn" class="exit-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>
+                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
         </div>
     </div>`;
@@ -59,7 +59,7 @@
         </div>
         <div class="new-menu-line">
             <div id="exitBtn2" class="exit-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>
+                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
         </div>
     </div>
@@ -404,100 +404,79 @@
     // Start welcome screen
     overlayBtn.addEventListener('click', event => {
         if(startX == endX && startY == endY){
-            gameOverlayOn = !gameOverlayOn;
-            if (!gameOverlayOn) {
-                debugger;
-                currentSong.pause();
-                lightningSound.pause();
-                gameOverlay.classList.add('hide-item');
-                welcomeSplash.classList.remove('fade-in-splash');
-                splashTitle.classList.remove('fade-in-splash-title');
-                welcomeSplash.classList.remove('fade-out-splash');
-                splashTitle.classList.remove('fade-out-splash');
-                splashContinueText.classList.remove('fade-out-splash');
-                menuScreen.classList.add('hide-item');
-                homeScreen.classList.add('hide-item');
-                try {
-                    welcomeSplash.removeChild(splashContinueText);
+            gameOverlayOn = true;
+            overlayBtn.classList.add('hide-item');
+            welcomeSplash.classList.add('fade-in-splash');
+            currentSong = new Audio(musicArray[1]);
+            currentSong.volume = config.audioVolume;
+            currentSong.load();
+            currentSong.currentTime = 5;
+            currentSong.play();
+            lightningSound = new Audio(soundEffectsArray[0]);
+            lightningSound.volume = config.audioVolume;
+            lightningSound.load();
+            lightningSound.play();
+            var timeout1 = setTimeout(()=>{
+                if(gameOverlayOn){
+                    splashTitle.classList.add('fade-in-splash-title');
                 }
-                catch{
-                    console.log("error");
+            }, 1000 * 1.5);
+            var timeout2 = setTimeout(()=>{
+                if(gameOverlayOn){
+                    welcomeSplash.appendChild(splashContinueText);
+                    console.log("continue text appended");
                 }
-                endAllTimeouts();
-            } else {
-                overlayBtn.classList.add('hide-item');
-                welcomeSplash.classList.add('fade-in-splash');
-                currentSong = new Audio(musicArray[1]);
-                currentSong.volume = config.audioVolume;
-                currentSong.load();
-                currentSong.currentTime = 5;
-                currentSong.play();
-                lightningSound = new Audio(soundEffectsArray[0]);
-                lightningSound.volume = config.audioVolume;
-                lightningSound.load();
-                lightningSound.play();
-                var timeout1 = setTimeout(()=>{
-                    if(gameOverlayOn){
-                        splashTitle.classList.add('fade-in-splash-title');
-                    }
-                }, 1000 * 1.5);
-                var timeout2 = setTimeout(()=>{
-                    if(gameOverlayOn){
-                        welcomeSplash.appendChild(splashContinueText);
-                        console.log("continue text appended");
-                    }
-                }, 1000 * 8.5);
-                welcomeSplash.addEventListener('click', event =>{
-                    if(gameOverlayOn){
-                        clearTimeout(timeout1);
-                        clearTimeout(timeout2);
+            }, 1000 * 8.5);
+            welcomeSplash.addEventListener('click', event =>{
+                if(gameOverlayOn){
+                    clearTimeout(timeout1);
+                    clearTimeout(timeout2);
+                    welcomeSplash.classList.remove('fade-in-splash');
+                    splashTitle.classList.remove('fade-in-splash-title');
+                    welcomeSplash.classList.add('fade-out-splash');
+                    splashTitle.classList.add('fade-out-splash');
+                    splashContinueText.classList.add('fade-out-splash');
+
+                    menuScreen.classList.remove('hide-item');
+                    homeScreen.classList.remove('hide-item');
+                    document.getElementById("startBtn").addEventListener('click',event =>{
+                        overlayBtn.classList.add('hide-item');
+                        menuScreen.classList.add('hide-item');
+                        homeScreen.classList.add('hide-item');
+                        console.log("start clicked");
+                        startGame();
+                    });
+                    document.getElementById("exitBtn").addEventListener('click',event =>{
+                        overlayBtn.classList.remove('hide-item');
+                        menuScreen.classList.add('hide-item');
+                        homeScreen.classList.add('hide-item');
+                        currentSong.pause();
+                        lightningSound.pause();
+                        gameOverlay.classList.add('hide-item');
                         welcomeSplash.classList.remove('fade-in-splash');
                         splashTitle.classList.remove('fade-in-splash-title');
-                        welcomeSplash.classList.add('fade-out-splash');
-                        splashTitle.classList.add('fade-out-splash');
-                        splashContinueText.classList.add('fade-out-splash');
-
+                        welcomeSplash.classList.remove('fade-out-splash');
+                        splashTitle.classList.remove('fade-out-splash');
+                        splashContinueText.classList.remove('fade-out-splash');
+                        try {
+                            welcomeSplash.removeChild(splashContinueText);
+                        }
+                        catch{
+                        }
+                        gameOverlayOn = false;
+                        endAllTimeouts();
+                        console.log("exit overlay");
+                    });
+                    document.getElementById('settingsBtn').addEventListener('click',()=>{
+                        optionsScreen.classList.remove('hide-item');
+                        menuScreen.classList.add('hide-item');
+                    });
+                    document.getElementById('exitBtn2').addEventListener('click', ()=>{
+                        optionsScreen.classList.add('hide-item');
                         menuScreen.classList.remove('hide-item');
-                        homeScreen.classList.remove('hide-item');
-                        document.getElementById("startBtn").addEventListener('click',event =>{
-                            overlayBtn.classList.add('hide-item');
-                            menuScreen.classList.add('hide-item');
-                            homeScreen.classList.add('hide-item');
-                            console.log("start clicked");
-                            startGame();
-                        });
-                        document.getElementById("exitBtn").addEventListener('click',event =>{
-                            overlayBtn.classList.remove('hide-item');
-                            menuScreen.classList.add('hide-item');
-                            homeScreen.classList.add('hide-item');
-                            currentSong.pause();
-                            lightningSound.pause();
-                            gameOverlay.classList.add('hide-item');
-                            welcomeSplash.classList.remove('fade-in-splash');
-                            splashTitle.classList.remove('fade-in-splash-title');
-                            welcomeSplash.classList.remove('fade-out-splash');
-                            splashTitle.classList.remove('fade-out-splash');
-                            splashContinueText.classList.remove('fade-out-splash');
-                            try {
-                                welcomeSplash.removeChild(splashContinueText);
-                            }
-                            catch{
-                            }
-                            gameOverlayOn = !gameOverlayOn;
-                            endAllTimeouts();
-                            console.log("exit overlay");
-                        });
-                        document.getElementById('settingsBtn').addEventListener('click',()=>{
-                            optionsScreen.classList.remove('hide-item');
-                            menuScreen.classList.add('hide-item');
-                        });
-                        document.getElementById('exitBtn2').addEventListener('click', ()=>{
-                            optionsScreen.classList.add('hide-item');
-                            menuScreen.classList.remove('hide-item');
-                        });
-                    } // end of if
-                }); // end of welcomeSplash event listener
-            } // end of else
+                    });
+                } // end of if
+            }); // end of welcomeSplash event listener
         }// end of if
     }); //end of overlayBtn event listener
 

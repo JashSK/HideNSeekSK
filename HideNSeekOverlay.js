@@ -51,6 +51,7 @@
     </div>`;
     const optionsScreen = document.createElement('div');
     optionsScreen.classList.add('menu-screen', 'hide-item');
+    optionsScreen.id = "optionsScreen";
     optionsScreen.innerHTML = `
     <div class="menu-inner-border" style="text-align:center;">
         <div class="new-menu-line t2" style="margin-bottom: 3vh;">Volume</div>
@@ -67,12 +68,15 @@
 
     const welcomeSplash = document.createElement('div');
     const splashTitle = document.createElement('label');
+    const splashSubtitle = document.createElement('label');
     const splashContinueText = document.createElement('label');
     welcomeSplash.classList.add('welcomesplash');
     welcomeSplash.appendChild(splashTitle);
+    splashSubtitle.classList.add('splash-subtitle');
     splashContinueText.classList.add('splash-text');
     splashTitle.classList.add('splash-title');
     splashTitle.appendChild(document.createTextNode("In the Dark"));
+    splashSubtitle.appendChild(document.createTextNode('A Smash Karts Hide \'N Seek Mini Game'));
     splashContinueText.appendChild(document.createTextNode("(click anywhere to continue)"));
 
     const gameOverlay = document.createElement('div');
@@ -305,13 +309,28 @@
         letter-spacing: 0.2vh;
         display: inline-block;
         opacity: 0%;
+        position: absolute;
+        top: 38vh;
+    }
+    .splash-subtitle {
+        user-select: none;
+        position: absolute;
+        top: 56vh;
+        left: 50%;
+        color: RGBa(188, 0, 0);
+        font-size: 4vh;
+        font-family: fantasy;
+        letter-spacing: 0.2vh;
+        display: inline-block;
+        opacity: 0%;
+        transform: translate(-50%);
     }
     .splash-text {
         user-select: none;
         position: absolute;
-        top: 60vh;
+        top: 64vh;
         left: 50%;
-        color: white;
+        color: RGBa(232, 193, 37);
         font-size: 3vh;
         font-family: fantasy;
         letter-spacing: 0.2vh;
@@ -423,6 +442,12 @@
             }, 1000 * 1.5);
             var timeout2 = setTimeout(()=>{
                 if(gameOverlayOn){
+                    welcomeSplash.appendChild(splashSubtitle);
+                    splashSubtitle.classList.add('fade-in-splash-title');
+                }
+            }, 1000 * 2);
+            var timeout3 = setTimeout(()=>{
+                if(gameOverlayOn){
                     welcomeSplash.appendChild(splashContinueText);
                     console.log("continue text appended");
                 }
@@ -435,6 +460,7 @@
                     splashTitle.classList.remove('fade-in-splash-title');
                     welcomeSplash.classList.add('fade-out-splash');
                     splashTitle.classList.add('fade-out-splash');
+                    splashSubtitle.classList.add('fade-out-splash');
                     splashContinueText.classList.add('fade-out-splash');
 
                     menuScreen.classList.remove('hide-item');
@@ -457,6 +483,7 @@
                         splashTitle.classList.remove('fade-in-splash-title');
                         welcomeSplash.classList.remove('fade-out-splash');
                         splashTitle.classList.remove('fade-out-splash');
+                        splashSubtitle.classList.add('fade-out-splash');
                         splashContinueText.classList.remove('fade-out-splash');
                         try {
                             welcomeSplash.removeChild(splashContinueText);
@@ -509,7 +536,9 @@
     function handleFlickerTimeOut() {
         const timeoutInt = setTimeout(()=>{
             if (gameOverlayOn) {
-                lightningSound = new Audio(soundEffectsArray[getRandomInt(0 , 2)]);
+                var rand = getRandomInt(0 , 2)
+                console.log(rand);
+                lightningSound = new Audio(soundEffectsArray[rand]);
                 lightningSound.play();
                 lightningSound.volume = config.audioVolume;
                 setTimeout(()=>{
@@ -558,6 +587,16 @@
             dragValue.style.left = x + "px";
             dragValue.style.top = y + "px";
             localStorage.setItem(dragValue.id + '.pos', `${x},${y}`);
+            if(dragValue.id == 'menu'){
+                document.getElementById('optionsScreen').style.left = x + "px";
+                document.getElementById('optionsScreen').style.top = y + "px";
+                localStorage.setItem(document.getElementById('optionsScreen') + '.pos', `${x},${y}`);
+            }
+            if(dragValue.id == 'optionsScreen'){
+                document.getElementById('menu').style.left = x + "px";
+                document.getElementById('menu').style.top = y + "px";
+                localStorage.setItem(document.getElementById('menu') + '.pos', `${x},${y}`);
+            }
         }
     });
 
@@ -568,6 +607,10 @@
 
     menuScreen.addEventListener('mousedown', event=>{
         move('menu');
+    });
+
+    optionsScreen.addEventListener('mousedown', event=>{
+        move('optionsScreen');
     });
 
     document.addEventListener("mouseup", event=>{

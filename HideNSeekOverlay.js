@@ -584,18 +584,19 @@
             } else if (y + (dragValue.offsetHeight / 2) > window.innerHeight) {
                 y = window.innerHeight - (dragValue.offsetHeight / 2);
             }
-            dragValue.style.left = x + "px";
-            dragValue.style.top = y + "px";
-            localStorage.setItem(dragValue.id + '.pos', `${x},${y}`);
+            const responsivePos = convertPixelsToResponsiveValue([x,y]);
+            dragValue.style.left = responsivePos[0];
+            dragValue.style.top = responsivePos[1];
+            localStorage.setItem(dragValue.id + '.pos', `${responsivePos[0]},${responsivePos[1]}`);
             if(dragValue.id == 'menu'){
-                document.getElementById('optionsScreen').style.left = x + "px";
-                document.getElementById('optionsScreen').style.top = y + "px";
-                localStorage.setItem(document.getElementById('optionsScreen') + '.pos', `${x},${y}`);
+                document.getElementById('optionsScreen').style.left = responsivePos[0];
+                document.getElementById('optionsScreen').style.top = responsivePos[1];
+                //localStorage.setItem('optionsScreen.pos', `${responsivePos[0]},${responsivePos[1]}`);
             }
             if(dragValue.id == 'optionsScreen'){
-                document.getElementById('menu').style.left = x + "px";
-                document.getElementById('menu').style.top = y + "px";
-                localStorage.setItem(document.getElementById('menu') + '.pos', `${x},${y}`);
+                document.getElementById('menu').style.left = responsivePos[0];
+                document.getElementById('menu').style.top = responsivePos[1];
+                localStorage.setItem('menu.pos', `${responsivePos[0]},${responsivePos[1]}`);
             }
         }
     });
@@ -633,12 +634,20 @@
 
     if (localStorage.getItem('overlayBtn.pos')) {
         const coords = localStorage.getItem('overlayBtn.pos').split(',');
-        overlayBtn.style.left = coords[0] + 'px';
-        overlayBtn.style.top = coords[1] + 'px';
+        overlayBtn.style.left = coords[0];
+        overlayBtn.style.top = coords[1];
     }
     if (localStorage.getItem('menu.pos')) {
         const coords = localStorage.getItem('menu.pos').split(',');
-        menuScreen.style.left = coords[0] + 'px';
-        menuScreen.style.top = coords[1] + 'px';
+        menuScreen.style.left = coords[0];
+        menuScreen.style.top = coords[1];
+        optionsScreen.style.left = coords[0];
+        optionsScreen.style.top = coords[1];
+    }
+
+    function convertPixelsToResponsiveValue(values) {
+        const x = ((values[0] * 100) / window.innerWidth) + 'vw';
+        const y = ((values[1] * 100) / window.innerHeight) + 'vh';
+        return [x,y];
     }
 })();

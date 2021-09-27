@@ -338,6 +338,7 @@
         opacity: 0%;
         animation: pulse-text 5s infinite;
         transform: translate(-50%);
+        text-align: center;
     }
     @keyframes pulse-text {
         0% {

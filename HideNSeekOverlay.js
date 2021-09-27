@@ -27,10 +27,12 @@
         audioVolume: (Number(localStorage.getItem('HNS-volume') !== undefined) ? Number(localStorage.getItem('HNS-volume')) : 0.5)
     }
     const homeScreen = document.createElement('div');
+    homeScreen.classList.add('home-screen', 'hide-item');
     const menuScreen = document.createElement('div');
+
     const audios /* lol audios */ = [];
     menuScreen.classList.add('menu-screen', 'hide-item');
-    homeScreen.classList.add('home-screen', 'hide-item');
+    menuScreen.id = "menu";
     menuScreen.innerHTML = `
     <div class="menu-inner-border">
         <div class="new-menu-line" style="justify-content:center;">
@@ -40,15 +42,16 @@
         </div>
         <div class="new-menu-line">
             <div id="settingsBtn" class="settings-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/cogwheel.png" style="width:7vh;height:7vh;"></img>
+                <img src="https://seanysean.github.io/sk-hs-assets/cogwheel.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
             <div id="exitBtn" class="exit-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>
+                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
         </div>
     </div>`;
     const optionsScreen = document.createElement('div');
     optionsScreen.classList.add('menu-screen', 'hide-item');
+    optionsScreen.id = "optionsScreen";
     optionsScreen.innerHTML = `
     <div class="menu-inner-border" style="text-align:center;">
         <div class="new-menu-line t2" style="margin-bottom: 3vh;">Volume</div>
@@ -57,7 +60,7 @@
         </div>
         <div class="new-menu-line">
             <div id="exitBtn2" class="exit-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>
+                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
         </div>
     </div>
@@ -65,12 +68,15 @@
 
     const welcomeSplash = document.createElement('div');
     const splashTitle = document.createElement('label');
+    const splashSubtitle = document.createElement('label');
     const splashContinueText = document.createElement('label');
     welcomeSplash.classList.add('welcomesplash');
     welcomeSplash.appendChild(splashTitle);
+    splashSubtitle.classList.add('splash-subtitle');
     splashContinueText.classList.add('splash-text');
     splashTitle.classList.add('splash-title');
     splashTitle.appendChild(document.createTextNode("In the Dark"));
+    splashSubtitle.appendChild(document.createTextNode('A Smash Karts Hide \'N Seek Mini Game'));
     splashContinueText.appendChild(document.createTextNode("(click anywhere to continue)"));
 
     const gameOverlay = document.createElement('div');
@@ -94,6 +100,7 @@
     itemLight.classList.add('flashlight', 'item-light');
     timerLight.classList.add('flashlight', 'timer-light');
     overlayBtn.classList.add('overlay-btn');
+    overlayBtn.id = "overlayBtn";
     exitBtn.classList.add('exit-btn', 'exit-btn-reposition', 'hide-item');
     exitBtn.innerHTML = `<img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>`;
     overlayBtn.appendChild(magnifyingGlass);
@@ -184,8 +191,8 @@
         position: absolute;
         width: 8vh;
         height: 8vh;
-        top: 22vh;
-        right: 2vh;
+        top: 26vh;
+        right: -2vh;
         background: black;
         border-radius: 30%;
         border: white solid 0.5vh;
@@ -194,10 +201,13 @@
         justify-content: center;
         align-items: center;
         z-index: 10000000;
+        transform: translate(-50%,-50%);
     }
     .magnifying-glass {
         width: 5vh;
         height: 5vh;
+        pointer-events: none;
+        user-select: none;
     }
     .home-screen {
         background: radial-gradient(transparent 10%, #000 100%);
@@ -220,6 +230,7 @@
         box-shadow: 0px 0px 15px white;
         padding: 1vh;
         pointer-events: all;
+        z-index: 1000000;
     }
     .menu-inner-border{
         width: 100%;
@@ -238,6 +249,7 @@
         align-items: center;
     }
     .t1{
+        user-select: none;
         color: white;
         font-size: 6vh;
         font-family:fantasy;
@@ -245,6 +257,7 @@
         display: inline-block;
     }
     .t2{
+        user-select: none;
         color: white;
         font-size: 5.5vh;
         font-family:fantasy;
@@ -280,27 +293,44 @@
         justify-content: space-around;
         align-items: center;
         pointer-events:all;
+        z-index: 10000000;
     }
     .exit-btn-reposition {
         position: absolute;
         top: 3vh;
         right: 3vh;
         width: 10vh;
-        z-index: 10000000;
     }
     .splash-title {
+        user-select: none;
         color: white;
         font-size: 15vh;
         font-family: fantasy;
         letter-spacing: 0.2vh;
         display: inline-block;
         opacity: 0%;
+        position: absolute;
+        top: 38vh;
+    }
+    .splash-subtitle {
+        user-select: none;
+        position: absolute;
+        top: 56vh;
+        left: 50%;
+        color: RGBa(188, 0, 0);
+        font-size: 4vh;
+        font-family: fantasy;
+        letter-spacing: 0.2vh;
+        display: inline-block;
+        opacity: 0%;
+        transform: translate(-50%);
     }
     .splash-text {
+        user-select: none;
         position: absolute;
-        top: 60vh;
+        top: 64vh;
         left: 50%;
-        color: white;
+        color: RGBa(232, 193, 37);
         font-size: 3vh;
         font-family: fantasy;
         letter-spacing: 0.2vh;
@@ -392,27 +422,8 @@
     });
     // Start welcome screen
     overlayBtn.addEventListener('click', event => {
-        gameOverlayOn = !gameOverlayOn;
-        if (!gameOverlayOn) {
-            debugger;
-            currentSong.pause();
-            lightningSound.pause();
-            gameOverlay.classList.add('hide-item');
-            welcomeSplash.classList.remove('fade-in-splash');
-            splashTitle.classList.remove('fade-in-splash-title');
-            welcomeSplash.classList.remove('fade-out-splash');
-            splashTitle.classList.remove('fade-out-splash');
-            splashContinueText.classList.remove('fade-out-splash');
-            menuScreen.classList.add('hide-item');
-            homeScreen.classList.add('hide-item');
-            try {
-                welcomeSplash.removeChild(splashContinueText);
-            }
-            catch{
-                console.log("error");
-            }
-            endAllTimeouts();
-        } else {
+        if(startX == endX && startY == endY){
+            gameOverlayOn = true;
             overlayBtn.classList.add('hide-item');
             welcomeSplash.classList.add('fade-in-splash');
             currentSong = new Audio(musicArray[1]);
@@ -431,6 +442,12 @@
             }, 1000 * 1.5);
             var timeout2 = setTimeout(()=>{
                 if(gameOverlayOn){
+                    welcomeSplash.appendChild(splashSubtitle);
+                    splashSubtitle.classList.add('fade-in-splash-title');
+                }
+            }, 1000 * 2);
+            var timeout3 = setTimeout(()=>{
+                if(gameOverlayOn){
                     welcomeSplash.appendChild(splashContinueText);
                     console.log("continue text appended");
                 }
@@ -443,6 +460,7 @@
                     splashTitle.classList.remove('fade-in-splash-title');
                     welcomeSplash.classList.add('fade-out-splash');
                     splashTitle.classList.add('fade-out-splash');
+                    splashSubtitle.classList.add('fade-out-splash');
                     splashContinueText.classList.add('fade-out-splash');
 
                     menuScreen.classList.remove('hide-item');
@@ -465,13 +483,14 @@
                         splashTitle.classList.remove('fade-in-splash-title');
                         welcomeSplash.classList.remove('fade-out-splash');
                         splashTitle.classList.remove('fade-out-splash');
+                        splashSubtitle.classList.add('fade-out-splash');
                         splashContinueText.classList.remove('fade-out-splash');
                         try {
                             welcomeSplash.removeChild(splashContinueText);
                         }
                         catch{
                         }
-                        gameOverlayOn = !gameOverlayOn;
+                        gameOverlayOn = false;
                         endAllTimeouts();
                         console.log("exit overlay");
                     });
@@ -485,7 +504,7 @@
                     });
                 } // end of if
             }); // end of welcomeSplash event listener
-        } // end of else
+        }// end of if
     }); //end of overlayBtn event listener
 
     function startGame() {
@@ -517,7 +536,9 @@
     function handleFlickerTimeOut() {
         const timeoutInt = setTimeout(()=>{
             if (gameOverlayOn) {
-                lightningSound = new Audio(soundEffectsArray[getRandomInt(0 , 2)]);
+                var rand = getRandomInt(0 , 2)
+                console.log(rand);
+                lightningSound = new Audio(soundEffectsArray[rand]);
                 lightningSound.play();
                 lightningSound.volume = config.audioVolume;
                 setTimeout(()=>{
@@ -534,6 +555,72 @@
         arrayOfTimeouts.push(timeoutInt);
     } // end of handleFlickerTimeOut
 
+    var dragValue;
+    var startX;
+    var startY;
+    var endX;
+    var endY;
+    function move(id){
+        dragValue = document.getElementById(id);
+        console.log("Drag value: " + dragValue.id);
+        startX = dragValue.getBoundingClientRect().x;
+        startY = dragValue.getBoundingClientRect().y;
+        console.log("X: " + startX + " Y: " + startY);
+    }
+
+    document.addEventListener("mousemove", event=>{
+        var x = event.pageX;
+        var y = event.pageY;
+        //console.log("mouse x at: " + x);
+        //console.log("mouse y at: " + y);
+        if(dragValue != null){
+            if (x - (dragValue.offsetWidth / 2) < 0) { // || () || (x + (dragValue.offsetWidth / 2) > window.innerWidth) || ( {
+                x = 0 + (dragValue.offsetWidth / 2);
+            } else if (x + (dragValue.offsetWidth / 2) > window.innerWidth) {
+                x = window.innerWidth - (dragValue.offsetWidth / 2);
+            }
+            if (y - (dragValue.offsetHeight / 2) < 0) {
+                y = 0 + (dragValue.offsetHeight / 2);
+            } else if (y + (dragValue.offsetHeight / 2) > window.innerHeight) {
+                y = window.innerHeight - (dragValue.offsetHeight / 2);
+            }
+            const responsivePos = convertPixelsToResponsiveValue([x,y]);
+            dragValue.style.left = responsivePos[0];
+            dragValue.style.top = responsivePos[1];
+            localStorage.setItem(dragValue.id + '.pos', `${responsivePos[0]},${responsivePos[1]}`);
+            if(dragValue.id == 'menu'){
+                document.getElementById('optionsScreen').style.left = responsivePos[0];
+                document.getElementById('optionsScreen').style.top = responsivePos[1];
+                //localStorage.setItem('optionsScreen.pos', `${responsivePos[0]},${responsivePos[1]}`);
+            }
+            if(dragValue.id == 'optionsScreen'){
+                document.getElementById('menu').style.left = responsivePos[0];
+                document.getElementById('menu').style.top = responsivePos[1];
+                localStorage.setItem('menu.pos', `${responsivePos[0]},${responsivePos[1]}`);
+            }
+        }
+    });
+
+    overlayBtn.addEventListener('mousedown', event=>{
+        console.log("overlay Button mousedown");
+        move('overlayBtn');
+    });
+
+    menuScreen.addEventListener('mousedown', event=>{
+        move('menu');
+    });
+
+    optionsScreen.addEventListener('mousedown', event=>{
+        move('optionsScreen');
+    });
+
+    document.addEventListener("mouseup", event=>{
+        endX = dragValue.getBoundingClientRect().x;
+        endY = dragValue.getBoundingClientRect().y;
+        console.log("X: " + endX + " Y: " + endY);
+        dragValue = null;
+    });
+
     function endAllTimeouts() {
         arrayOfTimeouts.forEach(t=>{
             clearTimeout(t);
@@ -544,4 +631,23 @@
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min)
     } // end of getRandomInt
+
+    if (localStorage.getItem('overlayBtn.pos')) {
+        const coords = localStorage.getItem('overlayBtn.pos').split(',');
+        overlayBtn.style.left = coords[0];
+        overlayBtn.style.top = coords[1];
+    }
+    if (localStorage.getItem('menu.pos')) {
+        const coords = localStorage.getItem('menu.pos').split(',');
+        menuScreen.style.left = coords[0];
+        menuScreen.style.top = coords[1];
+        optionsScreen.style.left = coords[0];
+        optionsScreen.style.top = coords[1];
+    }
+
+    function convertPixelsToResponsiveValue(values) {
+        const x = ((values[0] * 100) / window.innerWidth) + 'vw';
+        const y = ((values[1] * 100) / window.innerHeight) + 'vh';
+        return [x,y];
+    }
 })();

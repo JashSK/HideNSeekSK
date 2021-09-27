@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Small view
+// @name         In the Dark
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  try to take over the world!
+// @description  Smash Karts hide and seek minigame!
 // @author       seanysean, JashSK
 // @match        https://smashkarts.io/*
 // @icon         https://www.google.com/s2/favicons?domain=smashkarts.io
@@ -24,7 +24,7 @@
         mainFlashlightSize: 40, // %
         itemLightSize: 40, // %
         welcomeSplashTime: 10,
-        audioVolume: (Number(localStorage.getItem('HNS-volume') !== undefined) ? Number(localStorage.getItem('HNS-volume')) : 0.5)
+        audioVolume: (localStorage.getItem('HNS-volume') !== null) ? Number(localStorage.getItem('HNS-volume')) : 0.5
     }
     const homeScreen = document.createElement('div');
     homeScreen.classList.add('home-screen', 'hide-item');

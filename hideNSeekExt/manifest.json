@@ -1,0 +1,17 @@
+{
+    "manifest_version": 2,
+    "name": "In the Dark",
+    "version": "1.0",
+    "description": "A Smash Karts Hide and Seek minigame",
+    "icons": {
+        "16": "/images/icon16.png",
+        "48": "/images/icon48.png",
+        "128": "/images/icon128.png"
+    },  
+    "content_scripts": [
+        {
+            "matches": ["https://smashkarts.io/*"],
+            "js": ["content.js"]
+        }
+    ]
+  }

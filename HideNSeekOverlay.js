@@ -130,6 +130,25 @@
         top: 0;
         mix-blend-mode: hard-light;
     }
+    .lightning-strike::after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        animation: 1s linear fadeout;
+        animation-fill-mode: forwards;
+        top: 0;
+        left: 0;
+        position: absolute;
+    }
+    @keyframes fadeout {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
     .flashlight {
         background: gray;
         position: absolute;
@@ -543,10 +562,12 @@
                 lightningSound.play();
                 lightningSound.volume = config.audioVolume;
                 setTimeout(()=>{
+                    gameOverlay.classList.add('lightning-strike');
                     flashLight.classList.add('lightning-view');
                     timerLight.classList.add('hide-item');
                 }, 100); // .1 seconds
                 setTimeout(()=>{
+                    gameOverlay.classList.remove('lightning-strike');
                     flashLight.classList.remove('lightning-view');
                     timerLight.classList.remove('hide-item');;
                 }, config.wideViewDuration * 1000);

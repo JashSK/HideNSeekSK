@@ -15,6 +15,8 @@
 //
 // -------------------------------------------------
 
+//I'm sowry mr. extenshun revuer
+
 (function() {
     'use strict';
     const config = {
@@ -59,6 +61,7 @@
             <input type="range" min="0" max="1" step="0.01" id="changeVolumeSlider" style="width: 26vh;">
         </div>
         <div class="new-menu-line">
+            <div id="reset" class="reset-btn t2">Reset</div>
             <div id="exitBtn2" class="exit-btn">
                 <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
@@ -129,6 +132,26 @@
         position: absolute;
         top: 0;
         mix-blend-mode: hard-light;
+    }
+    .lightning-strike::after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        animation: ${config.wideViewDuration}s cubic-bezier(0.15, 0.96, 0.46, 0.96) fadeout;
+        animation-fill-mode: forwards;
+        animation-delay: 0.3s;
+        top: 0;
+        left: 0;
+        position: absolute;
+    }
+    @keyframes fadeout {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
     }
     .flashlight {
         background: gray;
@@ -259,7 +282,7 @@
     .t2{
         user-select: none;
         color: white;
-        font-size: 5.5vh;
+        font-size: 4.5vh;
         font-family:fantasy;
         letter-spacing: 0.1vh;
         display: inline-block;
@@ -295,6 +318,15 @@
         pointer-events:all;
         z-index: 10000000;
     }
+    .reset-btn{
+        width: 47%;
+        height: 10vh;
+        background: RGBa(253,165,15);
+        border: 1vh RGBa(233,86,34) solid;
+        border-radius: 17%/33%;
+        pointer-events:all;
+        line-height: 7.7vh;
+    }
     .exit-btn-reposition {
         position: absolute;
         top: 3vh;
@@ -324,6 +356,7 @@
         display: inline-block;
         opacity: 0%;
         transform: translate(-50%);
+        text-align: center;
     }
     .splash-text {
         user-select: none;
@@ -338,6 +371,7 @@
         opacity: 0%;
         animation: pulse-text 5s infinite;
         transform: translate(-50%);
+        text-align: center;
     }
     @keyframes pulse-text {
         0% {
@@ -444,6 +478,7 @@
                 if(gameOverlayOn){
                     welcomeSplash.appendChild(splashSubtitle);
                     splashSubtitle.classList.add('fade-in-splash-title');
+                    console.log("subtitle text appended");
                 }
             }, 1000 * 2);
             var timeout3 = setTimeout(()=>{
@@ -456,8 +491,10 @@
                 if(gameOverlayOn){
                     clearTimeout(timeout1);
                     clearTimeout(timeout2);
+                    clearTimeout(timeout3);
                     welcomeSplash.classList.remove('fade-in-splash');
                     splashTitle.classList.remove('fade-in-splash-title');
+                    splashSubtitle.classList.remove('fade-in-splash-title');
                     welcomeSplash.classList.add('fade-out-splash');
                     splashTitle.classList.add('fade-out-splash');
                     splashSubtitle.classList.add('fade-out-splash');
@@ -483,7 +520,7 @@
                         splashTitle.classList.remove('fade-in-splash-title');
                         welcomeSplash.classList.remove('fade-out-splash');
                         splashTitle.classList.remove('fade-out-splash');
-                        splashSubtitle.classList.add('fade-out-splash');
+                        splashSubtitle.classList.remove('fade-out-splash');
                         splashContinueText.classList.remove('fade-out-splash');
                         try {
                             welcomeSplash.removeChild(splashContinueText);
@@ -497,6 +534,27 @@
                     document.getElementById('settingsBtn').addEventListener('click',()=>{
                         optionsScreen.classList.remove('hide-item');
                         menuScreen.classList.add('hide-item');
+                    });
+                    document.getElementById('reset').addEventListener('click',()=>{
+                        //reset to default settings
+
+                        //Volume
+                        config.audioVolume = 0.5;
+                        localStorage.setItem('HNS-volume', 0.5);
+                        currentSong.volume = config.audioVolume;
+                        document.getElementById("changeVolumeSlider").value = 0.5;
+
+                        //Postion of elements
+                        document.getElementById('menu').style.left = "auto";
+                        document.getElementById('menu').style.top = "50%";
+                        localStorage.setItem('menu.pos', ``);
+
+                        document.getElementById('optionsScreen').style.left = "auto";
+                        document.getElementById('optionsScreen').style.top = "50%";
+
+                        document.getElementById('overlayBtn').style.left = "auto";
+                        document.getElementById('overlayBtn').style.top = "26vh";
+                        localStorage.setItem('overlayBtn.pos', ``);
                     });
                     document.getElementById('exitBtn2').addEventListener('click', ()=>{
                         optionsScreen.classList.add('hide-item');
@@ -542,12 +600,14 @@
                 lightningSound.play();
                 lightningSound.volume = config.audioVolume;
                 setTimeout(()=>{
-                    flashLight.classList.add('lightning-view');
-                    timerLight.classList.add('hide-item');
+                    gameOverlay.classList.add('lightning-strike');
+                    //flashLight.classList.add('lightning-view');
+                    //timerLight.classList.add('hide-item');
                 }, 100); // .1 seconds
                 setTimeout(()=>{
-                    flashLight.classList.remove('lightning-view');
-                    timerLight.classList.remove('hide-item');;
+                    gameOverlay.classList.remove('lightning-strike');
+                    //flashLight.classList.remove('lightning-view');
+                    //timerLight.classList.remove('hide-item');
                 }, config.wideViewDuration * 1000);
                 handleFlickerTimeOut();
             }
@@ -610,8 +670,8 @@
         move('menu');
     });
 
-    optionsScreen.addEventListener('mousedown', event=>{
-        move('optionsScreen');
+    document.getElementById('reset').addEventListener('mouseover', event=>{
+        console.log("reset button hovered");
     });
 
     document.addEventListener("mouseup", event=>{

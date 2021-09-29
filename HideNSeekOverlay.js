@@ -138,8 +138,9 @@
         width: 100%;
         height: 100%;
         background: #fff;
-        animation: 1s linear fadeout;
+        animation: ${config.wideViewDuration}s cubic-bezier(0.15, 0.96, 0.46, 0.96) fadeout;
         animation-fill-mode: forwards;
+        animation-delay: 0.3s;
         top: 0;
         left: 0;
         position: absolute;
@@ -600,13 +601,13 @@
                 lightningSound.volume = config.audioVolume;
                 setTimeout(()=>{
                     gameOverlay.classList.add('lightning-strike');
-                    flashLight.classList.add('lightning-view');
-                    timerLight.classList.add('hide-item');
+                    //flashLight.classList.add('lightning-view');
+                    //timerLight.classList.add('hide-item');
                 }, 100); // .1 seconds
                 setTimeout(()=>{
                     gameOverlay.classList.remove('lightning-strike');
-                    flashLight.classList.remove('lightning-view');
-                    timerLight.classList.remove('hide-item');;
+                    //flashLight.classList.remove('lightning-view');
+                    //timerLight.classList.remove('hide-item');
                 }, config.wideViewDuration * 1000);
                 handleFlickerTimeOut();
             }

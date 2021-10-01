@@ -1,19 +1,10 @@
 // ==UserScript==
 // @name         In the Dark
-// @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  Smash Karts hide and seek minigame!
 // @author       seanysean, JashSK
 // @match        https://smashkarts.io/*
-// @icon         https://www.google.com/s2/favicons?domain=smashkarts.io
-// @grant        none
 // ==/UserScript==
-
-// -------------------------------------------------
-//
-// Proceed with caution, not for the faint of heart.
-//
-// -------------------------------------------------
 
 //I'm sowry mr. extenshun revuer
 
@@ -83,7 +74,6 @@
     splashContinueText.appendChild(document.createTextNode("(click anywhere to continue)"));
 
     const gameOverlay = document.createElement('div');
-    const styleThingy = document.createElement('style');
     const flashLight = document.createElement('div');
     const itemLight = document.createElement('div');
     const timerLight = document.createElement('div');
@@ -108,339 +98,16 @@
     exitBtn.innerHTML = `<img src="${chrome.runtime.getURL("/assets/images/game-images/x-symbol.png")}" style="width:7vh;height:7vh;"></img>`;
     overlayBtn.appendChild(flashLightIcon);
 
-    styleThingy.innerHTML = `
-    .input{
-        width: 7vh;
-        height: 6vh;
-        padding: 1vh 1vh;
-        margin: 1vh 1.5vh;
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-size: 4vh;
-        text-align: center;
-    }
-    #changeVolumeSlider {
-        pointer-events: all !important;
-    }
-    .game-overlay {
-        pointer-events: none;
-        width: 100%;
-        height: 100%;
-        background: black;
-        position: absolute;
-        top: 0;
-        mix-blend-mode: hard-light;
-    }
-    .lightning-strike::after {
-        content: "";
-        width: 100%;
-        height: 100%;
-        background: #fff;
-        animation: ${config.wideViewDuration}s cubic-bezier(0.15, 0.96, 0.46, 0.96) fadeout;
-        animation-fill-mode: forwards;
-        animation-delay: 0.3s;
-        top: 0;
-        left: 0;
-        position: absolute;
-    }
-    @keyframes fadeout {
-        0% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-        }
-    }
-    .flashlight {
-        background: gray;
-        position: absolute;
-    }
-    .flashlight::after {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
-    .flashlight-main {
-        width: 100vh;
-        height: 100vh;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%,-50%);
-        border-radius: 100%;
-    }
-    .flashlight-main::after {
-        background: radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 35%);
-        background-position: 50% -10vh;
-    }
-    .item-light {
-        width: 31vh;
-        height: 31vh;
-        bottom: 0;
-        right: 0;
-    }
-    .item-light::after {
-        background: radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 60%);
-    }
-    .timer-light{
-        left: 50%;
-        top: 3.7vh;
-        width: 11vh;
-        height: 6vh;
-        transform: translate(-50%);
-        margin-left: 16.5vh;
-        border-radius: 100%;
-    }
-    .timer-light::after{
-       background: radial-gradient(RGBa(72,71,29,0.4), RGBa(72,71,29,0.4) 10%, #000 71%)
-    }
-    .hide-item {
-        opacity: 0;
-        pointer-events: none !important;
-        display: none;
-    }
-    .lightning-view {
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
-    .lightning-view::after{
-        background: radial-gradient(RGBa(0, 245, 249, 0.2), RGBa(0, 245, 249, 0.2) 10%, #000 ${config.wideViewSize}%);
-        background-position: 50% -10vh;
-    }
-    .overlay-btn {
-        position: absolute;
-        width: 8vh;
-        height: 8vh;
-        top: 26vh;
-        right: -2vh;
-        background: black;
-        border-radius: 30%;
-        border: white solid 0.5vh;
-        box-shadow: 0px 0px 0vh black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000000;
-        transform: translate(-50%,-50%);
-    }
-    .flashlight-icon {
-        width: 5vh;
-        height: 5vh;
-        pointer-events: none;
-        user-select: none;
-    }
-    .home-screen {
-        background: radial-gradient(transparent 10%, #000 100%);
-        pointer-events: none;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-    }
-    .menu-screen{
-        position: absolute;
-        background: black;
-        right: 13vh;
-        top: 50%;
-        width: 44vh;
-        height: 36vh;
-        transform: translate(-50%,-50%);
-        border-radius: 5%;
-        border: RGBa(255, 255, 255, 0.3) solid 0.5vh;
-        box-shadow: 0px 0px 15px white;
-        padding: 1vh;
-        pointer-events: all;
-        z-index: 1000000;
-    }
-    .menu-inner-border{
-        width: 100%;
-        height: 100%;
-        border: 0.5vh RGBa(255, 255, 255, 0.3) solid;
-        border-radius: 5%;
-        padding: 2vh;
-        pointer-events: none;
-    }
-    .new-menu-line{
-        width: 100%;
-        margin-bottom: 5vh;
-        flex-direction: row;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-    .t1{
-        user-select: none;
-        color: white;
-        font-size: 6vh;
-        font-family:fantasy;
-        letter-spacing: 0.7vh;
-        display: inline-block;
-    }
-    .t2{
-        user-select: none;
-        color: white;
-        font-size: 4.5vh;
-        font-family:fantasy;
-        letter-spacing: 0.1vh;
-        display: inline-block;
-    }
-    .start-btn {
-        width: 100%;
-        height: 10vh;
-        background: RGBa(253,165,15);
-        border: 1vh RGBa(233,86,34) solid;
-        border-radius: 8%/33%;
-        pointer-events:all;
-    }
-    .settings-btn {
-        width: 30%;
-        height: 10vh;
-        background: RGBa(27,136,240);
-        border: 1vh RGB(144,201,255) solid;
-        border-radius: 25%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        pointer-events: all;
-    }
-    .exit-btn {
-        width: 30%;
-        height: 10vh;
-        background: RGBa(230,0,0);
-        border: 1vh RGBa(161,0,0) solid;
-        border-radius: 25%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        pointer-events:all;
-        z-index: 10000000;
-    }
-    .reset-btn{
-        width: 47%;
-        height: 10vh;
-        background: RGBa(253,165,15);
-        border: 1vh RGBa(233,86,34) solid;
-        border-radius: 17%/33%;
-        pointer-events:all;
-        line-height: 7.7vh;
-    }
-    .exit-btn-reposition {
-        position: absolute;
-        top: 3vh;
-        right: 3vh;
-        width: 10vh;
-    }
-    .splash-title {
-        user-select: none;
-        color: white;
-        font-size: 15vh;
-        font-family: fantasy;
-        letter-spacing: 0.2vh;
-        display: inline-block;
-        opacity: 0%;
-        position: absolute;
-        top: 38vh;
-    }
-    .splash-subtitle {
-        user-select: none;
-        position: absolute;
-        top: 56vh;
-        left: 50%;
-        color: RGBa(188, 0, 0);
-        font-size: 4vh;
-        font-family: fantasy;
-        letter-spacing: 0.2vh;
-        display: inline-block;
-        opacity: 0%;
-        transform: translate(-50%);
-        text-align: center;
-    }
-    .splash-text {
-        user-select: none;
-        position: absolute;
-        top: 64vh;
-        left: 50%;
-        color: RGBa(232, 193, 37);
-        font-size: 3vh;
-        font-family: fantasy;
-        letter-spacing: 0.2vh;
-        display: inline-block;
-        opacity: 0%;
-        animation: pulse-text 5s infinite;
-        transform: translate(-50%);
-        text-align: center;
-    }
-    @keyframes pulse-text {
-        0% {
-            opacity: 0%;
-        }
-        50% {
-            opacity: 100%;
-        }
-        100% {
-            opacity: 0%;
-        }
-    }
-    .welcomesplash{
-        background: black;
-        width: 100%;
-        height: 100vh;
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0%;
-        pointer-events: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .fade-in-splash {
-        animation: fade-in-splash-animation 1s ease-in forwards;
-        pointer-events: all;
-    }
-    @keyframes fade-in-splash-animation {
-        0% {
-           opacity: 0%;
-        }
-        100% {
-           opacity: 100%;
-        }
-    }
-    .fade-out-splash {
-        animation: fade-out-splash-animation 1s ease-out forwards;
-        pointer-events: none;
-    }
-    @keyframes fade-out-splash-animation {
-        0% {
-           opacity: 100%;
-        }
-        100% {
-           opacity: 0%;
-        }
-    }
-    .fade-in-splash-title {
-        animation: splash-title-animation 8s ease-in forwards;
-    }
-    @keyframes splash-title-animation {
-        0% {
-           opacity: 0%;
-        }
-        100% {
-           opacity: 100%;
-        }
-    }
-    body {
-        overflow: hidden;
-    }`; // end of style guide
+    /*
+    let root = document.documentElement;
+    root.style.setProperty('--lightning-animation-timerLight', config.wideViewDuration);
+    root.style.setProperty('--wideview-size', config.wideViewSize);
+    */
 
     gameOverlay.appendChild(flashLight);
     gameOverlay.appendChild(itemLight);
     gameOverlay.appendChild(timerLight);
     document.body.appendChild(gameOverlay);
-    document.body.appendChild(styleThingy);
     document.body.appendChild(welcomeSplash);
     document.body.appendChild(overlayBtn);
     document.body.appendChild(menuScreen);
@@ -623,16 +290,20 @@
     function move(id){
         dragValue = document.getElementById(id);
         console.log("Drag value: " + dragValue.id);
-        startX = dragValue.getBoundingClientRect().x;
-        startY = dragValue.getBoundingClientRect().y;
+        try{
+            startX = dragValue.getBoundingClientRect().x;
+            startY = dragValue.getBoundingClientRect().y;
+        }
+        catch (e){
+            console.log(e);
+        }
+        
         console.log("X: " + startX + " Y: " + startY);
     }
 
     document.addEventListener("mousemove", event=>{
         var x = event.pageX;
         var y = event.pageY;
-        //console.log("mouse x at: " + x);
-        //console.log("mouse y at: " + y);
         if(dragValue != null){
             if (x - (dragValue.offsetWidth / 2) < 0) { // || () || (x + (dragValue.offsetWidth / 2) > window.innerWidth) || ( {
                 x = 0 + (dragValue.offsetWidth / 2);
@@ -675,8 +346,14 @@
     });
 
     document.addEventListener("mouseup", event=>{
-        endX = dragValue.getBoundingClientRect().x;
-        endY = dragValue.getBoundingClientRect().y;
+        try{
+            endX = dragValue.getBoundingClientRect().x;
+            endY = dragValue.getBoundingClientRect().y;
+        }
+        catch (e) {
+            console.log(e);
+        }
+        
         console.log("X: " + endX + " Y: " + endY);
         dragValue = null;
     });

@@ -17,7 +17,8 @@
     "content_scripts": [
         {
             "matches": ["https://smashkarts.io/*"],
-            "js": ["content.js"]
+            "js": ["content.js"],
+            "css": ["css/styles.css"]
         }
     ]
   }

@@ -44,10 +44,10 @@
         </div>
         <div class="new-menu-line">
             <div id="settingsBtn" class="settings-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/cogwheel.png" style="width:7vh;height:7vh;user-select:none;"></img>
+                <img src="/assets/images/game-images/cogwheel.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
             <div id="exitBtn" class="exit-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
+                <img src="/assets/images/game-images/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
         </div>
     </div>`;
@@ -63,7 +63,7 @@
         <div class="new-menu-line">
             <div id="reset" class="reset-btn t2">Reset</div>
             <div id="exitBtn2" class="exit-btn">
-                <img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
+                <img src="/assets/images/game-images/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
         </div>
     </div>
@@ -89,10 +89,10 @@
     const timerLight = document.createElement('div');
     const overlayBtn = document.createElement('div');
     const exitBtn = document.createElement('div');
-    const musicArray = ['https://seanysean.github.io/sk-hs-assets/Dark_80s_Horror_Music_-_Intruder_Royalty_Free_No_Copyright.mp3', 'https://seanysean.github.io/sk-hs-assets/REPULSIVE_-_Forgotten_COPYRIGHT_FREE_HORROR_MUSIC.mp3'];
-    const soundEffectsArray = ['https://seanysean.github.io/sk-hs-assets/lightning.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning2.mp3', 'https://seanysean.github.io/sk-hs-assets/lightning3.mp3'];
+    const musicArray = ['/assets/music/Intruder.mp3', '/assets/music/Repulsive.mp3'];
+    const soundEffectsArray = ['/assets/sounds/lightning1.mp3', '/assets/sounds/lightning2.mp3', '/assets/sounds/lightning3.mp3'];
     const magnifyingGlass = new Image();
-    magnifyingGlass.src = 'https://seanysean.github.io/sk-hs-assets/magnifying-glass-1.png';
+    magnifyingGlass.src = '/assets/game-images/magnifying-glass.png';
     magnifyingGlass.classList.add('magnifying-glass');
     let currentSong;
     let lightningSound;
@@ -105,7 +105,7 @@
     overlayBtn.classList.add('overlay-btn');
     overlayBtn.id = "overlayBtn";
     exitBtn.classList.add('exit-btn', 'exit-btn-reposition', 'hide-item');
-    exitBtn.innerHTML = `<img src="https://seanysean.github.io/sk-hs-assets/x-symbol.png" style="width:7vh;height:7vh;"></img>`;
+    exitBtn.innerHTML = `<img src="/assets/game-images/x-symbol.png" style="width:7vh;height:7vh;"></img>`;
     overlayBtn.appendChild(magnifyingGlass);
 
     styleThingy.innerHTML = `

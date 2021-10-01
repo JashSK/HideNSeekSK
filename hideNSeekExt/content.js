@@ -44,10 +44,10 @@
         </div>
         <div class="new-menu-line">
             <div id="settingsBtn" class="settings-btn">
-                <img src="/assets/images/game-images/cogwheel.png" style="width:7vh;height:7vh;user-select:none;"></img>
+                <img src="${chrome.runtime.getURL("/assets/images/game-images/cogwheel.png")}" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
             <div id="exitBtn" class="exit-btn">
-                <img src="/assets/images/game-images/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
+                <img src="${chrome.runtime.getURL("/assets/images/game-images/x-symbol.png")}" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
         </div>
     </div>`;
@@ -63,7 +63,7 @@
         <div class="new-menu-line">
             <div id="reset" class="reset-btn t2">Reset</div>
             <div id="exitBtn2" class="exit-btn">
-                <img src="/assets/images/game-images/x-symbol.png" style="width:7vh;height:7vh;user-select:none;"></img>
+                <img src="${chrome.runtime.getURL("/assets/images/game-images/x-symbol.png")}" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
         </div>
     </div>
@@ -89,11 +89,11 @@
     const timerLight = document.createElement('div');
     const overlayBtn = document.createElement('div');
     const exitBtn = document.createElement('div');
-    const musicArray = ['/assets/music/Intruder.mp3', '/assets/music/Repulsive.mp3'];
-    const soundEffectsArray = ['/assets/sounds/lightning1.mp3', '/assets/sounds/lightning2.mp3', '/assets/sounds/lightning3.mp3'];
-    const magnifyingGlass = new Image();
-    magnifyingGlass.src = '/assets/game-images/magnifying-glass.png';
-    magnifyingGlass.classList.add('magnifying-glass');
+    const musicArray = [chrome.runtime.getURL("/assets/music/Intruder.mp3"), chrome.runtime.getURL("/assets/music/Repulsive.mp3")];
+    const soundEffectsArray = [chrome.runtime.getURL("/assets/sounds/lightning1.mp3"), chrome.runtime.getURL("/assets/sounds/lightning2.mp3"), chrome.runtime.getURL("/assets/sounds/lightning3.mp3")];
+    const flashLightIcon = new Image();
+    flashLightIcon.src = chrome.runtime.getURL('/assets/images/icons/flashlight128.png');
+    flashLightIcon.classList.add('flashlight-icon');
     let currentSong;
     let lightningSound;
     let arrayOfTimeouts = [];
@@ -105,8 +105,8 @@
     overlayBtn.classList.add('overlay-btn');
     overlayBtn.id = "overlayBtn";
     exitBtn.classList.add('exit-btn', 'exit-btn-reposition', 'hide-item');
-    exitBtn.innerHTML = `<img src="/assets/game-images/x-symbol.png" style="width:7vh;height:7vh;"></img>`;
-    overlayBtn.appendChild(magnifyingGlass);
+    exitBtn.innerHTML = `<img src="${chrome.runtime.getURL("/assets/images/game-images/x-symbol.png")}" style="width:7vh;height:7vh;"></img>`;
+    overlayBtn.appendChild(flashLightIcon);
 
     styleThingy.innerHTML = `
     .input{
@@ -226,7 +226,7 @@
         z-index: 10000000;
         transform: translate(-50%,-50%);
     }
-    .magnifying-glass {
+    .flashlight-icon {
         width: 5vh;
         height: 5vh;
         pointer-events: none;

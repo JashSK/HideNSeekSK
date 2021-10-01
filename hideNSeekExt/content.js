@@ -258,7 +258,7 @@
         handleFlickerTimeOut();
     }
 
-    function handleFlickerTimeOut() {
+    /*function handleFlickerTimeOut() {
         const timeoutInt = setTimeout(()=>{
             if (gameOverlayOn) {
                 var rand = getRandomInt(0 , 2)
@@ -280,7 +280,39 @@
             }
         }, 1000 * config.lightningFrequency);
         arrayOfTimeouts.push(timeoutInt);
-    } // end of handleFlickerTimeOut
+    } // end of handleFlickerTimeOut*/
+
+    function handleFlickerTimeOut() {
+        const d = new Date();
+	    const currentMilliseconds = d.getUTCSeconds() * 1000 + d.getUTCMilliseconds();
+	    const timeTillNextEvent = 20000 - (currentMilliseconds % 20000);
+	    const timeoutInt = setTimeout(() => {
+            lightningStrike();
+	    	handleFlickerTimeOut();
+	    }, timeTillNextEvent);
+        arrayOfTimeouts.push(timeoutInt);
+    }
+
+    function lightningStrike() {
+        if (gameOverlayOn) {
+            var rand = getRandomInt(0 , 2)
+            console.log(rand);
+            lightningSound = new Audio(soundEffectsArray[rand]);
+            lightningSound.play();
+            lightningSound.volume = config.audioVolume;
+            setTimeout(()=>{
+                gameOverlay.classList.add('lightning-strike');
+                //flashLight.classList.add('lightning-view');
+                //timerLight.classList.add('hide-item');
+            }, 100); // .1 seconds
+            setTimeout(()=>{
+                gameOverlay.classList.remove('lightning-strike');
+                //flashLight.classList.remove('lightning-view');
+                //timerLight.classList.remove('hide-item');
+            }, config.wideViewDuration * 1000);
+            handleFlickerTimeOut();
+        }
+    }
 
     var dragValue;
     var startX;

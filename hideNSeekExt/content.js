@@ -28,9 +28,19 @@
     menuScreen.id = "menu";
     menuScreen.innerHTML = `
     <div class="menu-inner-border">
-        <div class="new-menu-line" style="justify-content:center;">
+        <div class="new-menu-line" style="justify-content:center; margin-bottom:2vh;">
             <div id="startBtn" class="start-btn" style="text-align:center;">
                 <label class="t1">Start</label>
+            </div>
+        </div>
+        <div class="new-menu-line" style="justify-content:center; margin-bottom:2vh;">
+            <div id="instructionsBtn" class="slim-blue-btn" style="text-align:center;">
+                <label class="t3">How to Setup</label>
+            </div>
+        </div>
+        <div class="new-menu-line" style="justify-content:center; margin-bottom:3vh;">
+            <div id="creditsBtn" class="slim-blue-btn" style="text-align:center;">
+                <label class="t3">Credits</label>
             </div>
         </div>
         <div class="new-menu-line">
@@ -42,23 +52,104 @@
             </div>
         </div>
     </div>`;
+
     const optionsScreen = document.createElement('div');
     optionsScreen.classList.add('menu-screen', 'hide-item');
     optionsScreen.id = "optionsScreen";
     optionsScreen.innerHTML = `
     <div class="menu-inner-border" style="text-align:center;">
+        <div class="new-menu-line t1" style="margin-bottom: 5vh;letter-spacing: 0.1vh;">Settings</div>
         <div class="new-menu-line t2" style="margin-bottom: 3vh;">Volume</div>
-        <div class="new-menu-line" style="justify-content:center;">
+        <div class="new-menu-line" style="justify-content:center;margin-bottom:7vh;">
             <input type="range" min="0" max="1" step="0.01" id="changeVolumeSlider" style="width: 26vh;">
         </div>
         <div class="new-menu-line">
             <div id="reset" class="reset-btn t2">Reset</div>
-            <div id="exitBtn2" class="exit-btn">
-                <img src="${chrome.runtime.getURL("/assets/images/game-images/x-symbol.png")}" style="width:7vh;height:7vh;user-select:none;"></img>
+            <div id="checkmarkBtn" class="checkmark-btn">
+                <img src="${chrome.runtime.getURL("/assets/images/game-images/checkmark.png")}" style="width:7vh;height:7vh;user-select:none;"></img>
             </div>
         </div>
     </div>
     `;
+
+    
+    const instructionsScreen = document.createElement('div');
+    instructionsScreen.classList.add('instructions-screen','hide-item');
+    instructionsScreen.id = "instructions";
+    instructionsScreen.innerHTML = `
+        <div class="menu-inner-border">
+        <div class="new-menu-line t1" style="margin-bottom: 5vh; text-align:center; letter-spacing: 0.1vh;">How To Setup</div>
+        <div class="new-menu-line" style="justify-content:start; margin-bottom: 1vh;width:100%;align-items:start">
+            <div style="width: 50%;">
+                <label class="t3" style="margin-bottom: 2vh;">1.) Join or create a private room</label>
+                <div style="justify-content: center; display: flex; margin-left: -4vh;">
+                    <img src="${chrome.runtime.getURL("/assets/images/game-images/room-code.jpg")}" style="width:80%;user-select:none;border-radius:1vh;"></img>
+                </div>
+            </div>
+            <div style="width: 50%;">
+                <label class="t3" style="margin-bottom: 2vh;">2.) Switch to "Close" camera view</label>
+                <div style="justify-content: center; display: flex; margin-left: -4vh; margin-bottom: 2vh;">
+                    <img src="${chrome.runtime.getURL("/assets/images/game-images/close-camera1.jpg")}" style="width:80%;user-select:none;border-radius:3vh;"></img>
+                </div>
+                <label class="t3" style="margin-bottom: 2vh;">3.) Start overlay from menu!</label>
+                <div style="justify-content: center; display: flex; margin-left: -6vh;">
+                    <img src="${chrome.runtime.getURL("/assets/images/game-images/click-start.jpg")}" style="width:60%;user-select:none;"></img>
+                </div>
+            </div> 
+        </div>
+        <div class="new-menu-line" style="justify-content:space-around; margin-top: 6vh;">
+            <a href="https://www.youtube.com/channel/UCnb2FsAV8vKZy-YYN85ZMiw" class="slim-blue-btn" target="_blank" style="text-decoration:none;pointer-events:all;text-align:center; width: 35%; height: 10vh;background: RGBa(253,165,15);border: 1vh RGBa(233,86,34) solid;">
+                <label class="t3" style="pointer-events:all;">Go To Explanation Video</label>
+            </a>
+            <div id="setupBackBtn" class="slim-blue-btn" style="text-align:center; width: 30%;">
+                <label class="t2">Go Back</label>
+            </div>
+        </div>
+        </div>`;
+
+    const creditsScreen = document.createElement('div');
+    creditsScreen.classList.add('credits-screen','hide-item');
+    creditsScreen.id = "credits";
+    creditsScreen.innerHTML = `
+        <div class="menu-inner-border">
+        <div class="new-menu-line t1" style="margin-bottom: 2vh; text-align:center; letter-spacing: 0.1vh;">Credits</div>
+        <div class="new-menu-line" style="justify-content:center; margin-bottom: 2vh;width:100%;align-items:start">
+            <label class="t2">Developers</label>
+        </div>
+        <div class="new-menu-line" style="justify-content:space-around; margin-left: 1vh; margin-bottom: 1vh;width:100%;align-items:center">
+            <a href="https://www.youtube.com/channel/UCnb2FsAV8vKZy-YYN85ZMiw" target="_blank" style="color:RGBa(18, 105, 255);pointer-events:all;display: flex;flex-direction: column;justify-content: center;align-items:center;">
+                <div class="t3" style="margin-bottom:1vh;color:RGBa(18, 105, 255);">JashSK</div>
+                <img src="https://yt3.ggpht.com/ytc/AKedOLRgfBT0GuDoCdkzNGJdBYNEmX3eGrIE9nQsUbNR=s88-c-k-c0x00ffffff-no-rj" style="width:11vh;border-radius: 50%;"></img>
+            </a>
+            <a href="https://www.youtube.com/channel/UCNIqfp1ZUfVfjh-FBoNDu8w" target="_blank" style="color:RGBa(18, 105, 255);pointer-events:all;display: flex;flex-direction: column;justify-content: center;align-items:center;">
+                <div class="t3" style="margin-bottom:1vh;color:RGBa(18, 105, 255);">SeanySean</div>
+                <img src="https://yt3.ggpht.com/ytc/AKedOLRuTAJ1rX8pPDuMrPLMW8LvYVzKF1LVq4dnm5k=s88-c-k-c0x00ffffff-no-rj" style="width:11vh;border-radius: 50%;"></img>
+            </a>
+        </div>
+        <div class="new-menu-line" style="justify-content:center; margin-bottom: 2vh;width:100%;align-items:start">
+            <label class="t2">Music</label>
+        </div>
+        <div class="new-menu-line" style="justify-content:center; margin-bottom: 2vh;width:100%;align-items:start">
+            <label style="text-align:center;">
+                <a href="https://www.youtube.com/watch?v=pc2MbqAFf7U&list=PLtVY5E-1y01h01JRTqZHCEDDLoC6OJSq7&index=26" target="_blank" class="t3" style="color:RGBa(18, 105, 255);pointer-events:all;">Forgotten</a>
+                <label class="t3"> by </label>
+                <label><a href="https://soundcloud.com/repulsivesound/" class="t3" target="_blank" style="color:RGBa(18, 105, 255);pointer-events:all;">REPULSIVE</a></label>
+            </label>
+        </div>
+        <div class="new-menu-line" style="justify-content:center; margin-bottom: 4vh;width:100%;align-items:start">
+            <label style="text-align:center;">
+                <a href="https://www.youtube.com/watch?v=MA_a4UjKRG8&list=PLtVY5E-1y01h01JRTqZHCEDDLoC6OJSq7&index=25" target="_blank" class="t3" style="color:RGBa(18, 105, 255);pointer-events:all;">Intruder</a>
+                <label class="t3"> by Karl Casey @ </label>
+                <label><a href="https://whitebataudio.com/" class="t3" target="_blank" style="color:RGBa(18, 105, 255);pointer-events:all;">White Bat Audio</a></label>
+            </label>
+        </div>
+        <div class="new-menu-line" style="justify-content:center;">
+            <div id="creditsBackBtn" class="slim-blue-btn" style="text-align:center; width: 40%; height: 7vh;">
+                <label class="t3">Go Back</label>
+            </div>
+        </div>
+        </div>`;
+    
 
     const welcomeSplash = document.createElement('div');
     const splashTitle = document.createElement('label');
@@ -113,6 +204,8 @@
     document.body.appendChild(menuScreen);
     document.body.appendChild(homeScreen);
     document.body.appendChild(optionsScreen);
+    document.body.appendChild(instructionsScreen);
+    document.body.appendChild(creditsScreen);
     document.body.appendChild(exitBtn);
     document.getElementById('changeVolumeSlider').value = config.audioVolume;
     document.getElementById("changeVolumeSlider").addEventListener("change", (e) => {
@@ -198,9 +291,25 @@
                         endAllTimeouts();
                         console.log("exit overlay");
                     });
+                    document.getElementById('instructionsBtn').addEventListener('click',()=>{
+                        instructionsScreen.classList.remove('hide-item');
+                        menuScreen.classList.add('hide-item');
+                    });
+                    document.getElementById('creditsBtn').addEventListener('click',()=>{
+                        creditsScreen.classList.remove('hide-item');
+                        menuScreen.classList.add('hide-item');
+                    });
                     document.getElementById('settingsBtn').addEventListener('click',()=>{
                         optionsScreen.classList.remove('hide-item');
                         menuScreen.classList.add('hide-item');
+                    });
+                    document.getElementById('setupBackBtn').addEventListener('click',()=>{
+                        menuScreen.classList.remove('hide-item');
+                        instructionsScreen.classList.add('hide-item');
+                    });
+                    document.getElementById('creditsBackBtn').addEventListener('click',()=>{
+                        menuScreen.classList.remove('hide-item');
+                        creditsScreen.classList.add('hide-item');
                     });
                     document.getElementById('reset').addEventListener('click',()=>{
                         //reset to default settings
@@ -223,7 +332,7 @@
                         document.getElementById('overlayBtn').style.top = "26vh";
                         localStorage.setItem('overlayBtn.pos', ``);
                     });
-                    document.getElementById('exitBtn2').addEventListener('click', ()=>{
+                    document.getElementById('checkmarkBtn').addEventListener('click', ()=>{
                         optionsScreen.classList.add('hide-item');
                         menuScreen.classList.remove('hide-item');
                     });
@@ -288,7 +397,6 @@
 	    const timeTillNextEvent = 20000 - (currentMilliseconds % 20000);
 	    const timeoutInt = setTimeout(() => {
             lightningStrike();
-	    	handleFlickerTimeOut();
 	    }, timeTillNextEvent);
         arrayOfTimeouts.push(timeoutInt);
     }

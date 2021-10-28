@@ -98,7 +98,7 @@
             </div> 
         </div>
         <div class="new-menu-line" style="justify-content:space-around; margin-top: 6vh;">
-            <a href="https://www.youtube.com/channel/UCnb2FsAV8vKZy-YYN85ZMiw" class="slim-blue-btn" target="_blank" style="text-decoration:none;pointer-events:all;text-align:center; width: 35%; height: 10vh;background: RGBa(253,165,15);border: 1vh RGBa(233,86,34) solid;">
+            <a href="https://youtu.be/gi5UTJ3_EY8" class="slim-blue-btn" target="_blank" style="text-decoration:none;pointer-events:all;text-align:center; width: 35%; height: 10vh;background: RGBa(253,165,15);border: 1vh RGBa(233,86,34) solid;">
                 <label class="t3" style="pointer-events:all;">Go To Explanation Video</label>
             </a>
             <div id="setupBackBtn" class="slim-blue-btn" style="text-align:center; width: 30%;">
@@ -457,7 +457,7 @@
             }
             const responsivePos = convertPixelsToResponsiveValue([x,y]);
             dragValue.style.left = responsivePos[0];
-            dragValue.style.top = responsivePos[1];
+            dragValue.style.top = (parseInt(responsivePos[1].substring(0, responsivePos[1].indexOf('v') - 1)) + 4).toString() + "vh";
             localStorage.setItem(dragValue.id + '.pos', `${responsivePos[0]},${responsivePos[1]}`);
             if(dragValue.id == 'menu'){
                 document.getElementById('optionsScreen').style.left = responsivePos[0];
@@ -471,10 +471,10 @@
             }
         }
     });
-
     overlayBtn.addEventListener('mousedown', event=>{
         console.log("overlay Button mousedown");
         move('overlayBtn');
+
     });
 
     menuScreen.addEventListener('mousedown', event=>{

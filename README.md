@@ -2,7 +2,7 @@
 
 ## Description
 
-Hide and seek minigame overlay for smashkarts.io
+Hide and seek minigame overlay for smashkarts.io. The hideNSeekExt folder contains all the code used for the extension.
 
 ## Asset Repo
 
